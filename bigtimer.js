@@ -27,13 +27,11 @@ module.exports = function (RED) {
 
     function randomInt(low, high) {
         var m = Math.floor(Math.random() * (Math.abs(high) - low) + low);
-        if (high <= 0) 
+        if (high <= 0) {
             return - m;
-         else 
+        } else { 
             return m;
-        
-
-
+        }
     }
 
     function dayinmonth(date, weekday, n) { // date, weekday (1-7) week of the month (1-5)
@@ -228,37 +226,30 @@ module.exports = function (RED) {
         var change = 0;
 
         node.on("input", function (inmsg) {
-            if (awayMinutes) 
+            if (awayMinutes) {
                 awayMinutes--;
-            
-
+            }
 
             if (awayMod == "mins") {
                 awayDisp = 0;
-                if (awayMinutes) 
+                if (awayMinutes) {
                     awayMinutes--;
-                
-
-
+                }
             } else if (awayMod == "hrs") {
                 awayDisp++;
                 if (awayDisp >= 60) {
                     awayDisp = 0;
-                    if (awayMinutes) 
+                    if (awayMinutes) {
                         awayMinutes--;
-                    
-
-
+                    }
                 }
             } else if (awayMod == "days") {
                 awayDisp++;
                 if (awayDisp >= 1440) {
                     awayDisp = 0;
-                    if (awayMinutes) 
+                    if (awayMinutes) {
                         awayMinutes--;
-                    
-
-
+                    }
                 }
             }
 
@@ -271,9 +262,13 @@ module.exports = function (RED) {
             }
 
             var now = new Date();
+            const dateNow = now.getDate();
+            const dayNow = now.getDay();
+            const hoursNow = now.getHours();
+
             // UTC time - not local time
             // this is the place to add an offset
-            now.setHours(now.getHours() + parseInt(node.offs, 10));
+            now.setHours(hoursNow + parseInt(node.offs, 10));
             // var nowOff = -now.getTimezoneOffset() * 60000;	// local offset
             var times = SunCalc.getTimes(now, node.lat, node.lon); // get this from UTC, not local time
             var moons = SunCalc.getMoonTimes(now, node.lat, node.lon); // moon up and down times - moons.rise, moons.set
@@ -291,25 +286,25 @@ module.exports = function (RED) {
             var moonrise;
             var moonset;
 
-            if (typeof moons.rise === 'undefined') 
+            if (typeof moons.rise === 'undefined') {
                 moonrise = 1440;
-             else {
+            } else {
                 date2 = moons.rise;
                 moonrise = (date2.getHours() * 60) + date2.getMinutes();
             }
-            if (typeof moons.set === 'undefined') 
+
+            if (typeof moons.set === 'undefined') {
                 moonset = 0;
-             else {
+            } else {
                 date3 = moons.set;
                 moonset = (date3.getHours() * 60) + date3.getMinutes();
             }
-
 
             var night = (times.night.getHours() * 60) + times.night.getMinutes();
             var nightEnd = (times.nightEnd.getHours() * 60) + times.nightEnd.getMinutes();
 
             // now=new Date(now+nowOff); // from now on we're working on local time
-            var today = (now.getHours() * 60) + now.getMinutes();
+            var today = (hoursNow * 60) + now.getMinutes();
             var startTime = parseInt(node.startT, 10);
             var endTime = parseInt(node.endT, 10);
             var startTime2 = parseInt(node.startT2, 10);
@@ -334,84 +329,65 @@ module.exports = function (RED) {
                 topic: ""
             };
 
-
             // autoState is 1 or 0 or would be on auto.... has anything changed...
             change = 0;
-
             if (actualStartOffset == 0) {
-                if (node.random) 
+                if (node.random) {
                     actualStartOffset = randomInt(0, node.startOff);
-                 else 
+                } else {
                     actualStartOffset = node.startOff;
-                
+                }
 
-
-                if (node.randon1) 
+                if (node.randon1) {
                     actualStartOffset = randomInt(0, node.startOff);
-                
-
-
+                }
             }
 
             if (actualEndOffset == 0) {
-                if (node.random) 
+                if (node.random) {
                     actualEndOffset = randomInt(0, node.endOff);
-                 else 
+                } else {
                     actualEndOffset = node.endOff;
-                
+                }
 
-
-                if (node.randoff1) 
+                if (node.randoff1) {
                     actualEndOffset = randomInt(0, node.endOff);
-                
-
-
+                }
             }
 
             if (actualStartOffset2 == 0) {
-                if (node.random) 
+                if (node.random) {
                     actualStartOffset2 = randomInt(0, node.startOff2);
-                 else 
+                } else { 
                     actualStartOffset2 = node.startOff2;
-                
+                }
 
-
-                if (node.randon2) 
+                if (node.randon2) {
                     actualStartOffset2 = randomInt(0, node.startOff2);
-                
-
-
+                }
             }
 
             if (actualEndOffset2 == 0) {
-                if (node.random) 
+                if (node.random) {
                     actualEndOffset2 = randomInt(0, node.endOff2);
-                 else 
+                } else {
                     actualEndOffset2 = node.endOff2;
-                
-
-
-                if (node.randoff2) 
+                }
+                if (node.randoff2) {
                     actualEndOffset2 = randomInt(0, node.endOff2);
-                
-
-
+                }
             }
 
-
             // manual override
-            if ((inmsg.payload == 1) || (inmsg.payload === 0)) 
+            if ((inmsg.payload == 1) || (inmsg.payload === 0)) {
                 inmsg.payload = inmsg.payload.toString();
-            
-
+            }
 
             if (inmsg.payload > "") {
                 inmsg.payload = inmsg.payload.toString().replace(/ +(?= )/g, '');
                 var theSwitch = inmsg.payload.toLowerCase().split(" ");
 
-
                 switch (theSwitch[0]) {
-
                     case "geo_override": change = 1;
                         switch (theSwitch.length) {
                             case 3: lonOverride = Number(theSwitch[1]);
@@ -424,12 +400,11 @@ module.exports = function (RED) {
                         break;
 
                     case "away":
-                        if (typeof theSwitch[1] === 'undefined') 
+                        if (typeof theSwitch[1] === 'undefined') {
                             awayMinutes = 0;
-                         else 
+                        } else { 
                             awayMinutes = Number(theSwitch[1]);
-                        
-
+                        }
 
                         if (typeof theSwitch[2] === 'undefined') {
                             awayMod = "mins";
@@ -444,12 +419,8 @@ module.exports = function (RED) {
                             awayMinutes = Number(theSwitch[1]);
                             awayDisp = 0;
                         }
-
-                        // }
-
                         awayMinutes++;
                         break;
-
 
                     case "sync": goodDay = 1;
                         change = 1;
@@ -457,22 +428,18 @@ module.exports = function (RED) {
 
                     case "toggle":
                         if (actualState == 0) {
-                            if (permanentManual == 0) 
+                            if (permanentManual == 0) {
                                 temporaryManual = 1;
-                            
-
-
+                            }
                             timeout = node.timeout;
                             change = 1;
                             manualState = 1;
                             stopped = 0;
                             goodDay = 1;
                         } else {
-                            if (permanentManual == 0) 
+                            if (permanentManual == 0) {
                                 temporaryManual = 1;
-                            
-
-
+                            }
                             timeout = node.timeout;
                             change = 1;
                             manualState = 0;
@@ -484,7 +451,6 @@ module.exports = function (RED) {
                     case "on":
                     case 1:
                     case "1":
-
                         // bodge to kill timer
                         precision = 0;
                         oneMinute = 60000;
@@ -495,20 +461,15 @@ module.exports = function (RED) {
                         }, oneMinute); // trigger every 60 secs
                         temporaryManual = 1;
 
-                        if (permanentManual == 0) 
+                        if (permanentManual == 0) {
                             temporaryManual = 1;
-                        
-
-
+                        }
                         timeout = node.timeout;
                         change = 1;
                         manualState = 1;
                         stopped = 0;
                         goodDay = 1;
-
-
                         break;
-
 
                     case "off":
                     case 0:
@@ -522,19 +483,15 @@ module.exports = function (RED) {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
 
-                        if (permanentManual == 0) 
+                        if (permanentManual == 0) {
                             temporaryManual = 1;
-                        
-
-
+                        }
                         timeout = node.timeout;
                         change = 1;
                         manualState = 0;
                         stopped = 0;
                         goodDay = 1;
-
                         break;
-
 
                     case "default":
                     case "auto":
@@ -547,8 +504,6 @@ module.exports = function (RED) {
                         tick = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
-
-
                         temporaryManual = 0;
                         permanentManual = 0;
                         change = 1;
@@ -582,6 +537,7 @@ module.exports = function (RED) {
                         manualState = 0;
                         permanentManual = 1;
                         break;
+
                     case "quiet": stopped = 1;
                         change = 0;
                         break;
@@ -592,9 +548,9 @@ module.exports = function (RED) {
                                 break;
                             case 2:
                                 var switch2 = theSwitch[1].split(":");
-                                if (switch2.length == 2) 
+                                if (switch2.length == 2) {
                                     onOverride = (Number(switch2[0]) * 60) + Number(switch2[1]);
-                                 else {
+                                } else {
                                     switch (theSwitch[1]) {
                                         case 'dawn': onOverride = 5000;
                                             break;
@@ -630,9 +586,9 @@ module.exports = function (RED) {
                                 break;
                             case 2:
                                 var switch2 = theSwitch[1].split(":");
-                                if (switch2.length == 2) 
+                                if (switch2.length == 2) {
                                     offOverride = (Number(switch2[0]) * 60) + Number(switch2[1]);
-                                 else {
+                                } else {
                                     switch (theSwitch[1]) {
                                         case 'dawn': offOverride = 5000;
                                             break;
@@ -661,15 +617,16 @@ module.exports = function (RED) {
                                 break;
                         }
                         break;
+
                     case "on_offset_override": change = 1;
                         switch (theSwitch.length) { // DJL this case block
                             case 1: onOffsetOverride = -1;
                                 break;
                             case 2:
                                 var switch2 = theSwitch[1].split(":");
-                                if (switch2.length == 2) 
+                                if (switch2.length == 2) {
                                     onOffsetOverride = (Number(switch2[0]) * 60) + Number(switch2[1]);
-                                 else {
+                                } else {
                                     switch (theSwitch[1]) {
                                         case 'dawn': onOffsetOverride = 5000;
                                             break;
@@ -698,15 +655,16 @@ module.exports = function (RED) {
                                 break;
                         }
                         break;
+
                     case "off_offset_override": change = 1;
                         switch (theSwitch.length) { // DJL this case block
                             case 1: offOffsetOverride = -1;
                                 break;
                             case 2:
                                 var switch2 = theSwitch[1].split(":");
-                                if (switch2.length == 2) 
+                                if (switch2.length == 2) {
                                     offOffsetOverride = (Number(switch2[0]) * 60) + Number(switch2[1]);
-                                 else {
+                                } else {
                                     switch (theSwitch[1]) {
                                         case 'dawn': offOffsetOverride = 5000;
                                             break;
@@ -735,6 +693,7 @@ module.exports = function (RED) {
                                 break;
                         }
                         break;
+
                     case "timer": precision = Number(theSwitch[1]);
                         if (precision) {
                             oneMinute = 1000; // dec 2018
@@ -745,11 +704,9 @@ module.exports = function (RED) {
                                     precision *= 60;
                                 }
                             }
-                            if (permanentManual == 0) 
+                            if (permanentManual == 0) {
                                 temporaryManual = 1;
-                            
-
-
+                            }
                             timeout = node.timeout;
                             change = 1;
                             manualState = 1;
@@ -778,11 +735,9 @@ module.exports = function (RED) {
                                     precision *= 60;
                                 }
                             }
-                            if (permanentManual == 0) 
+                            if (permanentManual == 0) {
                                 temporaryManual = 1;
-                            
-
-
+                            }
                             timeout = node.timeout;
                             change = 1;
                             manualState = 0;
@@ -800,7 +755,6 @@ module.exports = function (RED) {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
                         break;
-
 
                     default:
                         break;
@@ -826,292 +780,195 @@ module.exports = function (RED) {
             } // DJL
 
 
-            if (startTime == 5000) 
-                startTime = dawn;
-            
+            switch (startTime) {
+                case 5000:
+                    startTime = dawn;
+                    break;
+                case 5001:
+                    startTime = dusk;
+                    break;
+                case 5002:
+                    startTime = solarNoon;
+                    break;
+                case 5003:
+                    startTime = sunrise;
+                    break;
+                case 5004:
+                    startTime = sunset;
+                    break;
+                case 5005:
+                    startTime = night;
+                    break;
+                case 5006:
+                    startTime = nightEnd;
+                    break;
+                case 5007: 
+                    startTime = moonrise;
+                    break;
+                case 5008:
+                    startTime = moonset;
+                    break;
+            }
 
+            switch (endTime) {
+                case 5000:
+                    endTime = dawn;
+                    break;
+                case 5001:
+                    endTime = dusk;
+                    break;
+                case 5002:
+                    endTime = solarNoon;
+                    break;
+                case 5003:
+                    endTime = sunrise;
+                    break;
+                case 5004:
+                    endTime = sunset;
+                    break;
+                case 5005:
+                    endTime = night;
+                    break;
+                case 5006:
+                    endTime = nightEnd;
+                    break;
+                case 5007: 
+                    endTime = moonrise;
+                    break;
+                case 5008:
+                    endTime = moonset;
+                    break;
 
-            if (startTime == 5001) 
-                startTime = dusk;
-            
-
-
-            if (startTime == 5002) 
-                startTime = solarNoon;
-            
-
-
-            if (startTime == 5003) 
-                startTime = sunrise;
-            
-
-
-            if (startTime == 5004) 
-                startTime = sunset;
-            
-
-
-            if (startTime == 5005) 
-                startTime = night;
-            
-
-
-            if (startTime == 5006) 
-                startTime = nightEnd;
-            
-
-
-            if (startTime == 5007) 
-                startTime = moonrise;
-            
-
-
-            if (startTime == 5008) 
-                startTime = moonset;
-            
-
-
-            if (endTime == 5000) 
-                endTime = dawn;
-            
-
-
-            if (endTime == 5001) 
-                endTime = dusk;
-            
-
-
-            if (endTime == 5002) 
-                endTime = solarNoon;
-            
-
-
-            if (endTime == 5003) 
-                endTime = sunrise;
-            
-
-
-            if (endTime == 5004) 
-                endTime = sunset;
-            
-
-
-            if (endTime == 5005) 
-                endTime = night;
-            
-
-
-            if (endTime == 5006) 
-                endTime = nightEnd;
-            
-
-
-            if (endTime == 5007) 
-                endTime = moonrise;
-            
-
-
-            if (endTime == 5008) 
-                endTime = moonset;
-            
-
-
-            if (endTime == 10001) 
-                endTime = (startTime + 1) % 1440;
-            
-
-
-            if (endTime == 10002) 
-                endTime = (startTime + 2) % 1440;
-            
-
-
-            if (endTime == 10005) 
-                endTime = (startTime + 5) % 1440;
-            
-
-
-            if (endTime == 10010) 
-                endTime = (startTime + 10) % 1440;
-            
-
-
-            if (endTime == 10015) 
-                endTime = (startTime + 15) % 1440;
-            
-
-
-            if (endTime == 10030) 
-                endTime = (startTime + 30) % 1440;
-            
-
-
-            if (endTime == 10060) 
-                endTime = (startTime + 60) % 1440;
-            
-
-
-            if (endTime == 10090) 
-                endTime = (startTime + 90) % 1440;
-            
-
-
-            if (endTime == 10120) 
-                endTime = (startTime + 120) % 1440;
-            
-
+                case 10001:
+                    endTime = (startTime + 1) % 1440;
+                    break;
+                case 10002:
+                    endTime = (startTime + 2) % 1440;
+                    break;
+                case 10005: 
+                    endTime = (startTime + 5) % 1440;
+                    break;
+                case 10010: 
+                    endTime = (startTime + 10) % 1440;
+                    break;
+                case 10015: 
+                    endTime = (startTime + 15) % 1440;
+                    break;
+                case 10030: 
+                    endTime = (startTime + 30) % 1440;
+                    break;
+                case 10060: 
+                    endTime = (startTime + 60) % 1440;
+                    break;
+                case 10090: 
+                    endTime = (startTime + 90) % 1440;
+                    break;
+                case 10120: 
+                    endTime = (startTime + 120) % 1440;
+                    break;
+            }
 
             actualStartTime = (startTime + Number(actualStartOffset)) % 1440;
             actualEndTime = (endTime + Number(actualEndOffset)) % 1440;
 
-            if (startTime2 == 5000) 
-                startTime2 = dawn;
-            
+            switch (startTime2) {
+                case 5000:
+                    startTime2 = dawn;
+                    break;
+                case 5001:
+                    startTime2 = dusk;
+                    break;
+                case 5002:
+                    startTime2 = solarNoon;
+                    break;
+                case 5003:
+                    startTime2 = sunrise;
+                    break;
+                case 5004:
+                    startTime2 = sunset;
+                    break;
+                case 5005:
+                    startTime2 = night;
+                    break;
+                case 5006:
+                    startTime2 = nightEnd;
+                    break;
+                case 5007: 
+                    startTime2 = moonrise;
+                    break;
+                case 5008:
+                    startTime2 = moonset;
+                    break;
+            }
 
 
-            if (startTime2 == 5001) 
-                startTime2 = dusk;
-            
+            switch (endTime2) {
+                case 5000:
+                    endTime2 = dawn;
+                    break;
+                case 5001:
+                    endTime2 = dusk;
+                    break;
+                case 5002:
+                    endTime2 = solarNoon;
+                    break;
+                case 5003:
+                    endTime2 = sunrise;
+                    break;
+                case 5004:
+                    endTime2 = sunset;
+                    break;
+                case 5005:
+                    endTime2 = night;
+                    break;
+                case 5006:
+                    endTime2 = nightEnd;
+                    break;
+                case 5007: 
+                    endTime2 = moonrise;
+                    break;
+                case 5008:
+                    endTime2 = moonset;
+                    break;
 
-
-            if (startTime2 == 5002) 
-                startTime2 = solarNoon;
-            
-
-
-            if (startTime2 == 5003) 
-                startTime2 = sunrise;
-            
-
-
-            if (startTime2 == 5004) 
-                startTime2 = sunset;
-            
-
-
-            if (startTime2 == 5005) 
-                startTime2 = night;
-            
-
-
-            if (startTime2 == 5006) 
-                startTime2 = nightEnd;
-            
-
-
-            if (startTime2 == 5007) 
-                startTime2 = moonrise;
-            
-
-
-            if (startTime2 == 5008) 
-                startTime2 = moonset;
-            
-
-
-            if (endTime2 == 5000) 
-                endTime2 = dawn;
-            
-
-
-            if (endTime2 == 5001) 
-                endTime2 = dusk;
-            
-
-
-            if (endTime2 == 5002) 
-                endTime2 = solarNoon;
-            
-
-
-            if (endTime2 == 5003) 
-                endTime2 = sunrise;
-            
-
-
-            if (endTime2 == 5004) 
-                endTime2 = sunset;
-            
-
-
-            if (endTime2 == 5005) 
-                endTime2 = night;
-            
-
-
-            if (endTime2 == 5006) 
-                endTime2 = nightEnd;
-            
-
-
-            if (endTime2 == 5007) 
-                endTime2 = moonrise;
-            
-
-
-            if (endTime2 == 5008) 
-                endTime2 = moonset;
-            
-
-
-            if (endTime2 == 10001) 
-                endTime2 = (startTime2 + 1) % 1440;
-            
-
-
-            if (endTime2 == 10002) 
-                endTime2 = (startTime2 + 2) % 1440;
-            
-
-
-            if (endTime2 == 10005) 
-                endTime2 = (startTime2 + 5) % 1440;
-            
-
-
-            if (endTime2 == 10010) 
-                endTime2 = (startTime2 + 10) % 1440;
-            
-
-
-            if (endTime2 == 10015) 
-                endTime2 = (startTime2 + 15) % 1440;
-            
-
-
-            if (endTime2 == 10030) 
-                endTime2 = (startTime2 + 30) % 1440;
-            
-
-
-            if (endTime2 == 10060) 
-                endTime2 = (startTime2 + 60) % 1440;
-            
-
-
-            if (endTime2 == 10090) 
-                endTime2 = (startTime2 + 90) % 1440;
-            
-
-
-            if (endTime2 == 10120) 
-                endTime2 = (startTime2 + 120) % 1440;
-            
-
+                case 10001:
+                    endTime2 = (startTime + 1) % 1440;
+                    break;
+                case 10002:
+                    endTime2 = (startTime + 2) % 1440;
+                    break;
+                case 10005: 
+                    endTime2 = (startTime + 5) % 1440;
+                    break;
+                case 10010: 
+                    endTime2 = (startTime + 10) % 1440;
+                    break;
+                case 10015: 
+                    endTime2 = (startTime + 15) % 1440;
+                    break;
+                case 10030: 
+                    endTime2 = (startTime + 30) % 1440;
+                    break;
+                case 10060: 
+                    endTime2 = (startTime + 60) % 1440;
+                    break;
+                case 10090: 
+                    endTime2 = (startTime + 90) % 1440;
+                    break;
+                case 10120: 
+                    endTime2 = (startTime + 120) % 1440;
+                    break;
+            }
 
             actualStartTime2 = (startTime2 + Number(actualStartOffset2)) % 1440;
             actualEndTime2 = (endTime2 + Number(actualEndOffset2)) % 1440;
 
-
             autoState = 0;
             goodDay = 0;
-            switch (now.getDay()) {
+            switch (dayNow) {
                 case 0:
                     if (node.sun) 
                         autoState = 1;
-                    
-
-
                     break;
                 case 1:
                     if (node.mon) 
@@ -1121,37 +978,22 @@ module.exports = function (RED) {
                 case 2:
                     if (node.tue) 
                         autoState = 1;
-                    
-
-
                     break;
                 case 3:
                     if (node.wed) 
                         autoState = 1;
-                    
-
-
                     break;
                 case 4:
                     if (node.thu) 
                         autoState = 1;
-                    
-
-
                     break;
                 case 5:
                     if (node.fri) 
                         autoState = 1;
-                    
-
-
                     break;
                 case 6:
                     if (node.sat) 
                         autoState = 1;
-                    
-
-
                     break;
             }
 
@@ -1161,283 +1003,124 @@ module.exports = function (RED) {
                     case 0:
                         if (node.jan) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 1:
                         if (node.feb) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 2:
                         if (node.mar) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 3:
                         if (node.apr) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 4:
                         if (node.may) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 5:
                         if (node.jun) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 6:
                         if (node.jul) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 7:
                         if (node.aug) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 8:
                         if (node.sep) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 9:
                         if (node.oct) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 10:
                         if (node.nov) 
                             autoState = 1;
-                        
-
-
                         break;
                     case 11:
                         if (node.dec) 
                             autoState = 1;
-                        
-
-
                         break;
                 }
             }
 
-            if ((node.day1 == now.getDate()) && (node.month1 == (now.getMonth() + 1))) 
+            if (
+                ((node.day1 == dateNow) && (node.month1 == (now.getMonth() + 1))) ||
+                ((node.day2 == dateNow) && (node.month2 == (now.getMonth() + 1))) ||
+                ((node.day3 == dateNow) && (node.month3 == (now.getMonth() + 1))) ||
+                ((node.day4 == dateNow) && (node.month4 == (now.getMonth() + 1))) ||
+                ((node.day5 == dateNow) && (node.month5 == (now.getMonth() + 1))) ||
+                ((node.day6 == dateNow) && (node.month6 == (now.getMonth() + 1))) ||
+                ((node.day7 == dateNow) && (node.month7 == (now.getMonth() + 1))) ||
+                ((node.day8 == dateNow) && (node.month8 == (now.getMonth() + 1))) ||
+                ((node.day9 == dateNow) && (node.month9 == (now.getMonth() + 1))) ||
+                ((node.day10 == dateNow) && (node.month10 == (now.getMonth() + 1))) ||
+                ((node.day11 == dateNow) && (node.month11 == (now.getMonth() + 1))) ||
+                ((node.day12 == dateNow) && (node.month12 == (now.getMonth() + 1))) ||
+                (dayinmonth(now, node.d1, node.w1) == true) ||
+                (dayinmonth(now, node.d2, node.w2) == true) ||
+                (dayinmonth(now, node.d3, node.w3) == true) ||
+                (dayinmonth(now, node.d4, node.w4) == true) ||
+                (dayinmonth(now, node.d5, node.w5) == true) 
+            ) {
                 autoState = 1;
-            
+            }
 
 
-            if ((node.day2 == now.getDate()) && (node.month2 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day3 == now.getDate()) && (node.month3 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day4 == now.getDate()) && (node.month4 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day5 == now.getDate()) && (node.month5 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day6 == now.getDate()) && (node.month6 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day7 == now.getDate()) && (node.month7 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day8 == now.getDate()) && (node.month8 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day9 == now.getDate()) && (node.month9 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day10 == now.getDate()) && (node.month10 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day11 == now.getDate()) && (node.month11 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.day12 == now.getDate()) && (node.month12 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.d1, node.w1) == true) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.d2, node.w2) == true) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.d3, node.w3) == true) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.d4, node.w4) == true) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.d5, node.w5) == true) 
-                autoState = 1;
-            
-
-
-            if ((node.xday1 == now.getDate()) && (node.xmonth1 == (now.getMonth() + 1))) 
+            if (
+                ((node.xday1 == dateNow) && (node.xmonth1 == (now.getMonth() + 1))) ||
+                ((node.xday2 == dateNow) && (node.xmonth2 == (now.getMonth() + 1))) ||
+                ((node.xday3 == dateNow) && (node.xmonth3 == (now.getMonth() + 1))) ||
+                ((node.xday4 == dateNow) && (node.xmonth4 == (now.getMonth() + 1))) ||
+                ((node.xday5 == dateNow) && (node.xmonth5 == (now.getMonth() + 1))) ||
+                ((node.xday6 == dateNow) && (node.xmonth6 == (now.getMonth() + 1))) 
+            ) {
                 autoState = 0;
-            
+            }
 
-
-            if ((node.xday2 == now.getDate()) && (node.xmonth2 == (now.getMonth() + 1))) 
-                autoState = 0;
-            
-
-
-            if ((node.xday3 == now.getDate()) && (node.xmonth3 == (now.getMonth() + 1))) 
-                autoState = 0;
-            
-
-
-            if ((node.xday4 == now.getDate()) && (node.xmonth4 == (now.getMonth() + 1))) 
-                autoState = 0;
-            
-
-
-            if ((node.xday5 == now.getDate()) && (node.xmonth5 == (now.getMonth() + 1))) 
-                autoState = 0;
-            
-
-
-            if ((node.xday6 == now.getDate()) && (node.xmonth6 == (now.getMonth() + 1))) 
-                autoState = 0;
-            
-
-
-            if ((node.xday7 == now.getDate()) && (node.xmonth7 == (now.getMonth() + 1))) 
+            if (
+                ((node.xday7 == dateNow) && (node.xmonth7 == (now.getMonth() + 1))) ||
+                ((node.xday8 == dateNow) && (node.xmonth8 == (now.getMonth() + 1))) ||
+                ((node.xday9 == dateNow) && (node.xmonth9 == (now.getMonth() + 1))) ||
+                ((node.xday10 == dateNow) && (node.xmonth10 == (now.getMonth() + 1))) || 
+                ((node.xday11 == dateNow) && (node.xmonth11 == (now.getMonth() + 1))) || 
+                ((node.xday12 == dateNow) && (node.xmonth12 == (now.getMonth() + 1))) 
+            ) {
                 autoState = 1;
+            }
             
-
-
-            if ((node.xday8 == now.getDate()) && (node.xmonth8 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.xday9 == now.getDate()) && (node.xmonth9 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.xday10 == now.getDate()) && (node.xmonth10 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.xday11 == now.getDate()) && (node.xmonth11 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if ((node.xday12 == now.getDate()) && (node.xmonth12 == (now.getMonth() + 1))) 
-                autoState = 1;
-            
-
-
-            if (dayinmonth(now, node.xd1, node.xw1) == true) 
+            if (
+                (dayinmonth(now, node.xd1, node.xw1) == true) ||
+                (dayinmonth(now, node.xd2, node.xw2) == true) ||
+                (dayinmonth(now, node.xd3, node.xw3) == true) ||
+                (dayinmonth(now, node.xd4, node.xw4) == true) ||
+                (dayinmonth(now, node.xd5, node.xw5) == true) ||
+                (dayinmonth(now, node.xd6, node.xw6) == true) 
+            ) {
                 autoState = 0;
-            
-
-
-            if (dayinmonth(now, node.xd2, node.xw2) == true) 
-                autoState = 0;
-            
-
-
-            if (dayinmonth(now, node.xd3, node.xw3) == true) 
-                autoState = 0;
-            
-
-
-            if (dayinmonth(now, node.xd4, node.xw4) == true) 
-                autoState = 0;
-            
-
-
-            if (dayinmonth(now, node.xd5, node.xw5) == true) 
-                autoState = 0;
-            
-
-
-            if (dayinmonth(now, node.xd6, node.xw6) == true) 
-                autoState = 0;
-            
-
+            }
 
             if (autoState) { // have to handle midnight wrap
                 var wday;
-                wday = now.getDate() & 1;
-                if ((node.odd) && wday) 
+                wday = dateNow & 1;
+                if ((node.odd) && wday) {
                     autoState = 0;
-                
+                }
 
-
-                if ((node.even) && ! wday) 
+                if ((node.even) && ! wday) {
                     autoState = 0;
-                
+                }
 
-
-                if (autoState == 1) 
+                if (autoState == 1) {
                     goodDay = 1;
-                
-
-
+                }
             }
 
             // if autoState==1 at this point - we are in the right day and right month or in a special day
@@ -1446,43 +1129,34 @@ module.exports = function (RED) {
             if (autoState) { // have to handle midnight wrap
                 autoState = 0;
                 if (actualStartTime <= actualEndTime) {
-                    if ((today >= actualStartTime) && (today < actualEndTime)) 
+                    if ((today >= actualStartTime) && (today < actualEndTime)) {
                         autoState = 1;
-                    
-
-
+                    }
                 } else { // right we are in an overlap situation
-                    if (((today >= actualStartTime) || (today < actualEndTime))) 
+                    if (((today >= actualStartTime) || (today < actualEndTime))) {
                         autoState = 1;
-                    
-
-
+                    }
                 }
 
                 // added next line 17/02/2019 - suggestion from Mark McCans to overcome offset issue
                 if (node.startT2 != node.endT2) {
                     if (actualStartTime2 <= actualEndTime2) {
-                        if ((today >= actualStartTime2) && (today < actualEndTime2)) 
+                        if ((today >= actualStartTime2) && (today < actualEndTime2)) {
                             autoState = 2;
-                        
-
-
+                        }
                     } else { // right we are in an overlap situation
-                        if (((today >= actualStartTime2) || (today < actualEndTime2))) 
+                        if (((today >= actualStartTime2) || (today < actualEndTime2))) {
                             autoState = 2;
-                        
-
-
+                        }
                     }
                 }
             }
 
-            if ((node.atStart == 0) && (startDone == 0)) 
+            if ((node.atStart == 0) && (startDone == 0)) {
                 lastState = autoState;
-            
+            }
 
             // that is - no output at the start if node.atStart is not ticked
-
             if (autoState != lastState) { // there's a change of auto
                 lastState = autoState;
                 change = 1; // make a change happen and kill temporary manual
@@ -1498,14 +1172,12 @@ module.exports = function (RED) {
 
 
             if (precision) {
-                if (oneMinute == 1000) 
+                if (oneMinute == 1000) {
                     precision--;
-                 else {
-                    if (precision >= 60) 
+                } else {
+                    if (precision >= 60) {
                         precision -= 60;
-                    
-
-
+                    }
                 }
                 if (precision == 0) {
                     clearInterval(tick);
@@ -1532,48 +1204,55 @@ module.exports = function (RED) {
                 }
             }
 
-            if (temporaryManual || permanentManual) 
+            if (temporaryManual || permanentManual) {
                 actualState = manualState;
-             else 
+            } else { 
                 actualState = autoState;
+            }
 
             var duration = 0;
             var manov = "";
 
-            if (! goodDay == 1) 
+            if (! goodDay == 1) {
                 temporaryManual = 0;
+            }
 
             // dec 16 2018
-            if (permanentManual == 1) 
+            if (permanentManual == 1) {
                 manov = " Man. override. ";
-             else if (temporaryManual == 1) {
+            } else if (temporaryManual == 1) {
                 if (precision) {
-                    if (precision >= 60) 
+                    if (precision >= 60) { 
                         manov = " 'Timer' " + parseInt(precision / 60) + " mins left. ";
-                     else 
+                    } else { 
                         manov = " 'Timer' " + precision + " secs left. ";
-                } else 
+                    }
+                } else {
                     manov = " Temp. override. ";
+                }
             }
-            if (node.suspend) 
+            if (node.suspend) {
                 manov += " - SUSPENDED";
+            }
 
             outmsg2.name = node.name;
             outmsg2.time = 0;
 
-            if (actualState) 
+            if (actualState) {
                 outmsg2.state = "ON";
-             else 
+            } else { 
                 outmsg2.state = "OFF";
+            }
 
             if (stopped == 0) {
-                if (temporaryManual) 
+                if (temporaryManual) {
                     outmsg2.state += " Override";
-                 else if (permanentManual) 
+                } else if (permanentManual) {
                     outmsg2.state += " Manual";
-                 else {
-                    if (goodDay == 1) 
+                } else {
+                    if (goodDay == 1) {
                         outmsg2.state += " Auto";
+                    }
                 }
             } else {
                 outmsg2.state += " Stopped";
@@ -1582,21 +1261,23 @@ module.exports = function (RED) {
             if ((permanentManual == 1) || (temporaryManual == 1) || (node.suspend)) { // so manual then
                 if (actualState) {
                     if (stopped == 0) {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else {
                             statusText = "ON" + manov;
-                         node.status({fill: "green", shape: thedot, text: statusText});
+                        }
+                        node.status({fill: "green", shape: thedot, text: statusText});
                     } else {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else {
                             statusText = "STOPPED" + manov;
-                            node.status({ // stopped completely
+                        }
+                        node.status({ // stopped completely
                             fill: "black",
                             shape: thedot,
                             text: statusText
@@ -1604,21 +1285,23 @@ module.exports = function (RED) {
                     }
                 } else {
                     if (stopped == 0) {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else {
                             statusText = "OFF" + manov;
-                         node.status({fill: "red", shape: thedot, text: statusText});
+                        }
+                        node.status({fill: "red", shape: thedot, text: statusText});
                     } else {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else { 
                             statusText = "STOPPED" + manov;
-                         node.status({ // stopped completely
+                        }
+                        node.status({ // stopped completely
                             fill: "black",
                             shape: thedot,
                             text: statusText
@@ -1629,35 +1312,39 @@ module.exports = function (RED) {
                 if (goodDay == 1) { // auto and today's the day
                     if (actualState) { // i.e. if turning on automatically
                         if (actualState == 1) {
-                            if (today <= actualEndTime) 
+                            if (today <= actualEndTime) {
                                 duration = actualEndTime - today;
-                             else 
+                            } else { 
                                 duration = actualEndTime + (1440 - today);
+                            }
                         }
                         if (actualState == 2) {
-                            if (today <= actualEndTime2) 
+                            if (today <= actualEndTime2) {
                                 duration = actualEndTime2 - today;
-                             else 
+                            } else { 
                                 duration = actualEndTime2 + (1440 - today);
+                            }
                         }
 
                         outmsg2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
                         if (stopped == 0) {
-                            if (awayMinutes > 1) 
+                            if (awayMinutes > 1) {
                                 statusText = "Away " + (
                                     (awayMinutes) - 1
                                 ) + awayMod;
-                             else 
+                            } else { 
                                 statusText = "ON for " + pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
-                             node.status({fill: "green", shape: thedot, text: statusText});
+                            }
+                            node.status({fill: "green", shape: thedot, text: statusText});
                         } else {
-                            if (awayMinutes > 1) 
+                            if (awayMinutes > 1) {
                                 statusText = "Away " + (
                                     (awayMinutes) - 1
                                 ) + "mins";
-                             else 
+                            } else { 
                                 statusText = "STOPPED" + manov;
-                             node.status({ // stopped completely
+                            }
+                            node.status({ // stopped completely
                                 fill: "black",
                                 shape: thedot,
                                 text: statusText
@@ -1665,32 +1352,36 @@ module.exports = function (RED) {
                         }
                     } else {
                         if ((node.startT2 != node.endT2) && (today > actualEndTime) && (today < actualEndTime2)) { // valid start and end 2 and we're past period 1
-                            if ((today <= actualStartTime2)) 
+                            if ((today <= actualStartTime2)) {
                                 duration = actualStartTime2 - today;
-                             else 
+                            } else { 
                                 duration = actualStartTime2 + (1440 - today);
+                            }
                         } else {
-                            if (today <= actualStartTime) 
+                            if (today <= actualStartTime) {
                                 duration = actualStartTime - today;
-                             else 
+                            } else { 
                                 duration = actualStartTime + (1440 - today);
+                            }
                         } outmsg2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
                         if (stopped == 0) {
-                            if (awayMinutes > 1) 
+                            if (awayMinutes > 1) {
                                 statusText = "Away " + (
                                     (awayMinutes) - 1
                                 ) + awayMod;
-                             else 
+                            } else { 
                                 statusText = "OFF for " + pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
-                             node.status({fill: "blue", shape: thedot, text: statusText});
+                            }
+                            node.status({fill: "blue", shape: thedot, text: statusText});
                         } else {
-                            if (awayMinutes > 1) 
+                            if (awayMinutes > 1) {
                                 statusText = "Away " + (
                                     (awayMinutes) - 1
                                 ) + awayMod;
-                             else 
+                            } else { 
                                 statusText = "STOPPED" + manov;
-                             node.status({ // stopped completely
+                            }
+                            node.status({ // stopped completely
                                 fill: "black",
                                 shape: thedot,
                                 text: statusText
@@ -1700,43 +1391,48 @@ module.exports = function (RED) {
                 } else {
                     outmsg2.time = "";
                     if (stopped == 0) {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else { 
                             statusText = "No action today" + manov;
-                         node.status({ // auto and nothing today thanks
+                        }
+                        node.status({ // auto and nothing today thanks
                             fill: "black",
                             shape: thedot,
                             text: statusText
                         });
                     } else {
-                        if (awayMinutes > 1) 
+                        if (awayMinutes > 1) {
                             statusText = "Away " + (
                                 (awayMinutes) - 1
                             ) + awayMod;
-                         else 
+                        } else { 
                             statusText = "STOPPED" + manov;
-                         node.status({ // stopped completely
+                        }
+                        node.status({ // stopped completely
                             fill: "black",
                             shape: thedot,
                             text: statusText
                         });
                     }
                 }
-            } outmsg2.lon = node.lon;
+            } 
+            
+            outmsg2.lon = node.lon;
             outmsg2.lat = node.lat;
 
             outmsg1.topic = node.outtopic;
             outmsg3.payload = node.outText1;
             outmsg3.topic = node.outtopic;
 
-            if (temporaryManual || permanentManual) 
+            if (temporaryManual || permanentManual) {
                 outmsg1.state = (actualState) ? "on" : "off";
-             else 
+            } else { 
                 outmsg1.state = "auto";
-             outmsg1.value = actualState;
+            }
+            outmsg1.value = actualState;
 
             if ((actualState) && (awayMinutes < 2)) {
                 outmsg1.payload = node.outPayload1;
@@ -1759,8 +1455,9 @@ module.exports = function (RED) {
             outmsg1.stamp = Date.now();
             outmsg1.extState = statusText;
 
-            if (awayMinutes) 
+            if (awayMinutes) {
                 outmsg2.state = "AWAY";
+            }
 
             outmsg2.start = actualStartTime;
             outmsg2.end = actualEndTime;
@@ -1783,11 +1480,11 @@ module.exports = function (RED) {
             outmsg2.stamp = Date.now();
             outmsg2.extState = statusText;
 
-            if (outmsg2.state.substr(0, 2) == "ON") 
+            if (outmsg2.state.substr(0, 2) == "ON") {
                 outmsg2.payload = 1;
-             else 
+            } else {
                 outmsg2.payload = 0;
-            
+            }
 
             // jan 9, 2022
 
@@ -1796,38 +1493,44 @@ module.exports = function (RED) {
                 if ((change) || ((node.atStart) && (startDone == 0))) {
                     if (outmsg1.payload > "") {
                         if (stopped == 0) {
-                            if (change) 
+                            if (change) {
                                 node.send([outmsg1, outmsg2, outmsg3]);
-                             else 
+                            } else {
                                 node.send([null, outmsg2, outmsg3]);
+                            }
                         } else {
-                            if (change) 
+                            if (change) {
                                 node.send([outmsg1, outmsg2, null]);
-                             else 
+                            } else {
                                 node.send([null, outmsg2, null]);
+                            }
                         }
                     } else {
-                        if (stopped == 0) 
+                        if (stopped == 0) {
                             node.send([null, outmsg2, outmsg3]);
-                         else 
+                        } else {
                             node.send([null, outmsg2, null]);
+                        }
                     }
                 } else {
                     if (outmsg1.payload > "") {
                         if (node.repeat) {
-                            if (stopped == 0) 
+                            if (stopped == 0) {
                                 node.send([outmsg1, outmsg2, null]);
-                             else 
+                            } else {
                                 node.send([null, outmsg2, null]);
+                            }
                         } else {
-                            if (stopped == 0) 
+                            if (stopped == 0) {
                                 node.send([null, outmsg2, null]);
-                             else 
+                            } else {
                                 node.send([null, outmsg2, null]);
+                            }
                         }
                     } else {
-                        if (node.repeat) 
+                        if (node.repeat) {
                             node.send([null, outmsg2, null]);
+                        }
                     }
                 }
             }
