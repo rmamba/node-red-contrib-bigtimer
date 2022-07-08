@@ -43,6 +43,10 @@ module.exports = function (RED) {
         }
     }
 
+    function minutesSinceMidnight(dateTime) {
+        return (dateTime.getHours() * 60) + dateTime.getMinutes();
+    }
+
     function bigTimerNode(n) {
         RED.nodes.createNode(this, n);
         var node = this;
@@ -273,13 +277,11 @@ module.exports = function (RED) {
             var times = SunCalc.getTimes(now, node.lat, node.lon); // get this from UTC, not local time
             var moons = SunCalc.getMoonTimes(now, node.lat, node.lon); // moon up and down times - moons.rise, moons.set
 
-            var dawn = (times.dawn.getHours() * 60) + times.dawn.getMinutes();
-            var dusk = (times.dusk.getHours() * 60) + times.dusk.getMinutes();
-
-            var solarNoon = (times.solarNoon.getHours() * 60) + times.solarNoon.getMinutes();
-
-            var sunrise = (times.sunrise.getHours() * 60) + times.sunrise.getMinutes();
-            var sunset = (times.sunset.getHours() * 60) + times.sunset.getMinutes();
+            var dawn = minutesSinceMidnight(times.dawn);
+            var dusk = minutesSinceMidnight(times.dusk);
+            var solarNoon = minutesSinceMidnight(times.solarNoon);
+            var sunrise = minutesSinceMidnight(times.sunrise);
+            var sunset = minutesSinceMidnight(times.sunset);
 
             var date2 = new Date;
             var date3 = new Date;
@@ -290,21 +292,21 @@ module.exports = function (RED) {
                 moonrise = 1440;
             } else {
                 date2 = moons.rise;
-                moonrise = (date2.getHours() * 60) + date2.getMinutes();
+                moonrise = minutesSinceMidnight(date2);
             }
 
             if (typeof moons.set === 'undefined') {
                 moonset = 0;
             } else {
                 date3 = moons.set;
-                moonset = (date3.getHours() * 60) + date3.getMinutes();
+                moonset = minutesSinceMidnight(date3);
             }
 
-            var night = (times.night.getHours() * 60) + times.night.getMinutes();
-            var nightEnd = (times.nightEnd.getHours() * 60) + times.nightEnd.getMinutes();
+            var night = minutesSinceMidnight(times.night);
+            var nightEnd = minutesSinceMidnight(times.nightEnd);
 
             // now=new Date(now+nowOff); // from now on we're working on local time
-            var today = (hoursNow * 60) + now.getMinutes();
+            var today = minutesSinceMidnight(now);
             var startTime = parseInt(node.startT, 10);
             var endTime = parseInt(node.endT, 10);
             var startTime2 = parseInt(node.startT2, 10);
