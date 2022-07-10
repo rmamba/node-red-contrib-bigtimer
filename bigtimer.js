@@ -15,37 +15,14 @@
  * away added 1/1/2022
  */
 
+
 module.exports = function (RED) {
     "use strict";
     var SunCalc = require('suncalc');
-
-    function pad(n, width, z) {
-        z = z || '0';
-        n = n + '';
-        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
-
-    function randomInt(low, high) {
-        var m = Math.floor(Math.random() * (Math.abs(high) - low) + low);
-        if (high <= 0) {
-            return - m;
-        } else { 
-            return m;
-        }
-    }
-
-    function dayinmonth(date, weekday, n) { // date, weekday (1-7) week of the month (1-5)
-        if (n > 0) {
-            return((Math.ceil((date.getDate()) / 7) == n) && (date.getDay() == weekday - 1));
-        } else {
-            var last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            return(Math.ceil(last.getDate() / 7) == Math.ceil(date.getDate() / 7) && (date.getDay() == weekday - 1));
-        }
-    }
-
-    function minutesSinceMidnight(dateTime) {
-        return (dateTime.getHours() * 60) + dateTime.getMinutes();
-    }
+    const pad = require('./helpers/pad');
+    const randomInt = require('./helpers/randomInt');
+    const dayInMonth = require('./helpers/dayInMonth');
+    const minutesSinceMidnight = require('./helpers/minutesSinceMidnight');
 
     function bigTimerNode(n) {
         RED.nodes.createNode(this, n);
@@ -228,6 +205,10 @@ module.exports = function (RED) {
         var actualState = 0;
 
         var change = 0;
+
+        var timer = setInterval(function () {
+            node.emit("input", {});
+        }, oneMinute); // trigger every 60 secs
 
         node.on("input", function (inmsg) {
             if (awayMinutes) {
@@ -457,8 +438,8 @@ module.exports = function (RED) {
                         precision = 0;
                         oneMinute = 60000;
                         temporaryManual = 0;
-                        clearInterval(tick);
-                        tick = setInterval(function () {
+                        clearInterval(timer);
+                        timer = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
                         temporaryManual = 1;
@@ -480,8 +461,8 @@ module.exports = function (RED) {
                         precision = 0;
                         oneMinute = 60000;
                         temporaryManual = 0;
-                        clearInterval(tick);
-                        tick = setInterval(function () {
+                        clearInterval(timer);
+                        timer = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
 
@@ -502,8 +483,8 @@ module.exports = function (RED) {
                         precision = 0;
                         oneMinute = 60000;
                         temporaryManual = 0;
-                        clearInterval(tick);
-                        tick = setInterval(function () {
+                        clearInterval(timer);
+                        timer = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
                         temporaryManual = 0;
@@ -721,8 +702,8 @@ module.exports = function (RED) {
                             stopped = 0;
                             goodDay = 1;
                         }
-                        clearInterval(tick);
-                        tick = setInterval(function () {
+                        clearInterval(timer);
+                        timer = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
                         break;
@@ -752,8 +733,8 @@ module.exports = function (RED) {
                             stopped = 0;
                             goodDay = 1;
                         }
-                        clearInterval(tick);
-                        tick = setInterval(function () {
+                        clearInterval(timer);
+                        timer = setInterval(function () {
                             node.emit("input", {});
                         }, oneMinute); // trigger every 60 secs
                         break;
@@ -1066,11 +1047,11 @@ module.exports = function (RED) {
                 ((node.day10 == dateNow) && (node.month10 == (now.getMonth() + 1))) ||
                 ((node.day11 == dateNow) && (node.month11 == (now.getMonth() + 1))) ||
                 ((node.day12 == dateNow) && (node.month12 == (now.getMonth() + 1))) ||
-                (dayinmonth(now, node.d1, node.w1) == true) ||
-                (dayinmonth(now, node.d2, node.w2) == true) ||
-                (dayinmonth(now, node.d3, node.w3) == true) ||
-                (dayinmonth(now, node.d4, node.w4) == true) ||
-                (dayinmonth(now, node.d5, node.w5) == true) 
+                (dayInMonth(now, node.d1, node.w1) == true) ||
+                (dayInMonth(now, node.d2, node.w2) == true) ||
+                (dayInMonth(now, node.d3, node.w3) == true) ||
+                (dayInMonth(now, node.d4, node.w4) == true) ||
+                (dayInMonth(now, node.d5, node.w5) == true) 
             ) {
                 autoState = 1;
             }
@@ -1099,12 +1080,12 @@ module.exports = function (RED) {
             }
             
             if (
-                (dayinmonth(now, node.xd1, node.xw1) == true) ||
-                (dayinmonth(now, node.xd2, node.xw2) == true) ||
-                (dayinmonth(now, node.xd3, node.xw3) == true) ||
-                (dayinmonth(now, node.xd4, node.xw4) == true) ||
-                (dayinmonth(now, node.xd5, node.xw5) == true) ||
-                (dayinmonth(now, node.xd6, node.xw6) == true) 
+                (dayInMonth(now, node.xd1, node.xw1) == true) ||
+                (dayInMonth(now, node.xd2, node.xw2) == true) ||
+                (dayInMonth(now, node.xd3, node.xw3) == true) ||
+                (dayInMonth(now, node.xd4, node.xw4) == true) ||
+                (dayInMonth(now, node.xd5, node.xw5) == true) ||
+                (dayInMonth(now, node.xd6, node.xw6) == true) 
             ) {
                 autoState = 0;
             }
@@ -1158,7 +1139,7 @@ module.exports = function (RED) {
                 lastState = autoState;
             }
 
-            // that is - no output at the start if node.atStart is not ticked
+            // that is - no output at the start if node.atStart is not timered
             if (autoState != lastState) { // there's a change of auto
                 lastState = autoState;
                 change = 1; // make a change happen and kill temporary manual
@@ -1182,14 +1163,14 @@ module.exports = function (RED) {
                     }
                 }
                 if (precision == 0) {
-                    clearInterval(tick);
+                    clearInterval(timer);
                     oneMinute = 60000;
                     temporaryManual = 0;
                     permanentManual = 0;
                     change = 1;
                     stopped = 0;
                     goodDay = 1;
-                    tick = setInterval(function () {
+                    timer = setInterval(function () {
                         node.emit("input", {});
                     }, oneMinute); // trigger every 60 secs
                 }
@@ -1540,22 +1521,15 @@ module.exports = function (RED) {
 
         }); // end of the internal function
 
-        var tock = setTimeout(function () {
+        setTimeout(function () {
             node.emit("input", {});
         }, 2000);
         // wait 2 secs before starting to let things settle down -
         // e.g. UI connect
 
-        var tick = setInterval(function () {
-            node.emit("input", {});
-        }, oneMinute); // trigger every 60 secs
-
         node.on("close", function () {
-            if (tock) {
-                clearTimeout(tock);
-            }
-            if (tick) {
-                clearInterval(tick);
+            if (timer) {
+                clearInterval(timer);
             }
         });
 
