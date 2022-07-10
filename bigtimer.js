@@ -122,9 +122,9 @@ module.exports = function (RED) {
             }
 
             var now = new Date();
-            const dateNow = now.getDate();
-            const dayNow = now.getDay();
-            const hoursNow = now.getHours();
+            const dateNow = now.getUTCDate();
+            const dayNow = now.getUTCDay();
+            const hoursNow = now.getUTCHours();
 
             // UTC time - not local time
             // this is the place to add an offset
@@ -176,7 +176,7 @@ module.exports = function (RED) {
                 if (node.random) {
                     actualStartOffset = randomInt(0, node.startOff);
                 } else {
-                    actualStartOffset = node.startOff;
+                    actualStartOffset = parseInt(node.startOff);
                 }
 
                 if (node.randon1) {
@@ -188,7 +188,7 @@ module.exports = function (RED) {
                 if (node.random) {
                     actualEndOffset = randomInt(0, node.endOff);
                 } else {
-                    actualEndOffset = node.endOff;
+                    actualEndOffset = parseInt(node.endOff);
                 }
 
                 if (node.randoff1) {
@@ -200,7 +200,7 @@ module.exports = function (RED) {
                 if (node.random) {
                     actualStartOffset2 = randomInt(0, node.startOff2);
                 } else { 
-                    actualStartOffset2 = node.startOff2;
+                    actualStartOffset2 = parseInt(node.startOff2);
                 }
 
                 if (node.randon2) {
@@ -212,7 +212,7 @@ module.exports = function (RED) {
                 if (node.random) {
                     actualEndOffset2 = randomInt(0, node.endOff2);
                 } else {
-                    actualEndOffset2 = node.endOff2;
+                    actualEndOffset2 = parseInt(node.endOff2);
                 }
                 if (node.randoff2) {
                     actualEndOffset2 = randomInt(0, node.endOff2);
@@ -839,7 +839,7 @@ module.exports = function (RED) {
 
             if (autoState) {
                 autoState = 0;
-                switch (now.getMonth()) {
+                switch (now.getUTCMonth()) {
                     case 0:
                         if (node.jan) 
                             autoState = 1;
@@ -892,18 +892,18 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.day1 == dateNow) && (node.month1 == (now.getMonth() + 1))) ||
-                ((node.day2 == dateNow) && (node.month2 == (now.getMonth() + 1))) ||
-                ((node.day3 == dateNow) && (node.month3 == (now.getMonth() + 1))) ||
-                ((node.day4 == dateNow) && (node.month4 == (now.getMonth() + 1))) ||
-                ((node.day5 == dateNow) && (node.month5 == (now.getMonth() + 1))) ||
-                ((node.day6 == dateNow) && (node.month6 == (now.getMonth() + 1))) ||
-                ((node.day7 == dateNow) && (node.month7 == (now.getMonth() + 1))) ||
-                ((node.day8 == dateNow) && (node.month8 == (now.getMonth() + 1))) ||
-                ((node.day9 == dateNow) && (node.month9 == (now.getMonth() + 1))) ||
-                ((node.day10 == dateNow) && (node.month10 == (now.getMonth() + 1))) ||
-                ((node.day11 == dateNow) && (node.month11 == (now.getMonth() + 1))) ||
-                ((node.day12 == dateNow) && (node.month12 == (now.getMonth() + 1))) ||
+                ((node.day1 == dateNow) && (node.month1 == (now.getUTCMonth() + 1))) ||
+                ((node.day2 == dateNow) && (node.month2 == (now.getUTCMonth() + 1))) ||
+                ((node.day3 == dateNow) && (node.month3 == (now.getUTCMonth() + 1))) ||
+                ((node.day4 == dateNow) && (node.month4 == (now.getUTCMonth() + 1))) ||
+                ((node.day5 == dateNow) && (node.month5 == (now.getUTCMonth() + 1))) ||
+                ((node.day6 == dateNow) && (node.month6 == (now.getUTCMonth() + 1))) ||
+                ((node.day7 == dateNow) && (node.month7 == (now.getUTCMonth() + 1))) ||
+                ((node.day8 == dateNow) && (node.month8 == (now.getUTCMonth() + 1))) ||
+                ((node.day9 == dateNow) && (node.month9 == (now.getUTCMonth() + 1))) ||
+                ((node.day10 == dateNow) && (node.month10 == (now.getUTCMonth() + 1))) ||
+                ((node.day11 == dateNow) && (node.month11 == (now.getUTCMonth() + 1))) ||
+                ((node.day12 == dateNow) && (node.month12 == (now.getUTCMonth() + 1))) ||
                 (dayInMonth(now, node.d1, node.w1) == true) ||
                 (dayInMonth(now, node.d2, node.w2) == true) ||
                 (dayInMonth(now, node.d3, node.w3) == true) ||
@@ -914,23 +914,23 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.xday1 == dateNow) && (node.xmonth1 == (now.getMonth() + 1))) ||
-                ((node.xday2 == dateNow) && (node.xmonth2 == (now.getMonth() + 1))) ||
-                ((node.xday3 == dateNow) && (node.xmonth3 == (now.getMonth() + 1))) ||
-                ((node.xday4 == dateNow) && (node.xmonth4 == (now.getMonth() + 1))) ||
-                ((node.xday5 == dateNow) && (node.xmonth5 == (now.getMonth() + 1))) ||
-                ((node.xday6 == dateNow) && (node.xmonth6 == (now.getMonth() + 1))) 
+                ((node.xday1 == dateNow) && (node.xmonth1 == (now.getUTCMonth() + 1))) ||
+                ((node.xday2 == dateNow) && (node.xmonth2 == (now.getUTCMonth() + 1))) ||
+                ((node.xday3 == dateNow) && (node.xmonth3 == (now.getUTCMonth() + 1))) ||
+                ((node.xday4 == dateNow) && (node.xmonth4 == (now.getUTCMonth() + 1))) ||
+                ((node.xday5 == dateNow) && (node.xmonth5 == (now.getUTCMonth() + 1))) ||
+                ((node.xday6 == dateNow) && (node.xmonth6 == (now.getUTCMonth() + 1))) 
             ) {
                 autoState = 0;
             }
 
             if (
-                ((node.xday7 == dateNow) && (node.xmonth7 == (now.getMonth() + 1))) ||
-                ((node.xday8 == dateNow) && (node.xmonth8 == (now.getMonth() + 1))) ||
-                ((node.xday9 == dateNow) && (node.xmonth9 == (now.getMonth() + 1))) ||
-                ((node.xday10 == dateNow) && (node.xmonth10 == (now.getMonth() + 1))) || 
-                ((node.xday11 == dateNow) && (node.xmonth11 == (now.getMonth() + 1))) || 
-                ((node.xday12 == dateNow) && (node.xmonth12 == (now.getMonth() + 1))) 
+                ((node.xday7 == dateNow) && (node.xmonth7 == (now.getUTCMonth() + 1))) ||
+                ((node.xday8 == dateNow) && (node.xmonth8 == (now.getUTCMonth() + 1))) ||
+                ((node.xday9 == dateNow) && (node.xmonth9 == (now.getUTCMonth() + 1))) ||
+                ((node.xday10 == dateNow) && (node.xmonth10 == (now.getUTCMonth() + 1))) || 
+                ((node.xday11 == dateNow) && (node.xmonth11 == (now.getUTCMonth() + 1))) || 
+                ((node.xday12 == dateNow) && (node.xmonth12 == (now.getUTCMonth() + 1))) 
             ) {
                 autoState = 1;
             }
@@ -1303,9 +1303,11 @@ module.exports = function (RED) {
             outputMessage2.lon = node.lon;
             outputMessage2.lat = node.lat;
             outputMessage2.actualStartOffset = actualStartOffset;
+            outputMessage2.actualEndOffset = actualEndOffset;
             outputMessage2.actualStartTime = actualStartTime;
             outputMessage2.actualEndTime = actualEndTime;
             outputMessage2.actualStartOffset2 = actualStartOffset2;
+            outputMessage2.actualEndOffset2 = actualEndOffset2;
             outputMessage2.actualStartTime2 = actualStartTime2;
             outputMessage2.actualEndTime2 = actualEndTime2;
             outputMessage2.start = actualStartTime;

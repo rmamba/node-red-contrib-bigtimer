@@ -1,7 +1,7 @@
 const dayInMonth = require('../helpers/dayInMonth');
 
 test('check day in month', () => {
-    let d = new Date(2022, 7, 30, 7, 46, 31, 4);
+    let d = new Date(Date.UTC(2022, 7, 30, 7, 46, 31, 4));
     expect(dayInMonth(d, 1, 0)).toBe(false);
     expect(dayInMonth(d, 2, 0)).toBe(false);
     expect(dayInMonth(d, 3, 0)).toBe(true);
@@ -10,7 +10,7 @@ test('check day in month', () => {
     expect(dayInMonth(d, 6, 0)).toBe(false);
     expect(dayInMonth(d, 7, 0)).toBe(false);
 
-    d = new Date(2022, 7, 10, 7, 46, 31, 4);
+    d = new Date(Date.UTC(2022, 7, 10, 7, 46, 31, 4));
     expect(dayInMonth(d, 1, 2)).toBe(false);
     expect(dayInMonth(d, 2, 2)).toBe(false);
     expect(dayInMonth(d, 3, 2)).toBe(false);
