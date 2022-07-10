@@ -26,10 +26,11 @@ module.exports = function (RED) {
 
     function bigTimerNode(inputParameters) {
         RED.nodes.createNode(this, inputParameters);
-        var node = {
-            ...this,
-            ...inputParameters
-        };
+        var node = this;
+
+        Object.keys(inputParameters).forEach(key => {
+            node[key] = inputParameters[key];
+        });
 
         var oneMinute = 60000;
         var precision = 0;
