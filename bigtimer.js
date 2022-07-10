@@ -24,8 +24,8 @@ module.exports = function (RED) {
     const dayInMonth = require('./helpers/dayInMonth');
     const minutesSinceMidnight = require('./helpers/minutesSinceMidnight');
 
-    function bigTimerNode(n) {
-        RED.nodes.createNode(this, n);
+    function bigTimerNode(inputParameters) {
+        RED.nodes.createNode(this, inputParameters);
         var node = this;
 
         var oneMinute = 60000;
@@ -52,132 +52,132 @@ module.exports = function (RED) {
 
         var onlyManual = 0;
 
-        node.name = n.name;
-        node.lat = n.lat;
-        node.lon = n.lon;
-        node.offs = n.offs;
-        node.startT = n.starttime;
-        node.endT = n.endtime;
-        node.startT2 = n.starttime2;
-        node.endT2 = n.endtime2;
-        node.startOff = n.startoff;
-        node.endOff = n.endoff;
-        node.startOff2 = n.startoff2;
-        node.endOff2 = n.endoff2;
-        node.outtopic = n.outtopic;
-        node.outPayload1 = n.outpayload1;
-        node.outPayload2 = n.outpayload2;
-        node.outText1 = n.outtext1;
-        node.outText2 = n.outtext2;
-        node.timeout = n.timeout;
-        node.sun = n.sun;
-        node.mon = n.mon;
-        node.tue = n.tue;
-        node.wed = n.wed;
-        node.thu = n.thu;
-        node.fri = n.fri;
-        node.sat = n.sat;
-        node.jan = n.jan;
-        node.feb = n.feb;
-        node.mar = n.mar;
-        node.apr = n.apr;
-        node.may = n.may;
-        node.jun = n.jun;
-        node.jul = n.jul;
-        node.aug = n.aug;
-        node.sep = n.sep;
-        node.oct = n.oct;
-        node.nov = n.nov;
-        node.dec = n.dec;
+        node.name = inputParameters.name;
+        node.lat = inputParameters.lat;
+        node.lon = inputParameters.lon;
+        node.offs = inputParameters.offs;
+        node.startT = inputParameters.starttime;
+        node.endT = inputParameters.endtime;
+        node.startT2 = inputParameters.starttime2;
+        node.endT2 = inputParameters.endtime2;
+        node.startOff = inputParameters.startoff;
+        node.endOff = inputParameters.endoff;
+        node.startOff2 = inputParameters.startoff2;
+        node.endOff2 = inputParameters.endoff2;
+        node.outtopic = inputParameters.outtopic;
+        node.outPayload1 = inputParameters.outpayload1;
+        node.outPayload2 = inputParameters.outpayload2;
+        node.outText1 = inputParameters.outtext1;
+        node.outText2 = inputParameters.outtext2;
+        node.timeout = inputParameters.timeout;
+        node.sun = inputParameters.sun;
+        node.mon = inputParameters.mon;
+        node.tue = inputParameters.tue;
+        node.wed = inputParameters.wed;
+        node.thu = inputParameters.thu;
+        node.fri = inputParameters.fri;
+        node.sat = inputParameters.sat;
+        node.jan = inputParameters.jan;
+        node.feb = inputParameters.feb;
+        node.mar = inputParameters.mar;
+        node.apr = inputParameters.apr;
+        node.may = inputParameters.may;
+        node.jun = inputParameters.jun;
+        node.jul = inputParameters.jul;
+        node.aug = inputParameters.aug;
+        node.sep = inputParameters.sep;
+        node.oct = inputParameters.oct;
+        node.nov = inputParameters.nov;
+        node.dec = inputParameters.dec;
 
-        node.suspend = n.suspend;
-        node.random = n.random;
-        node.randon1 = n.randon1;
-        node.randoff1 = n.randoff1;
-        node.randon2 = n.randon2;
-        node.randoff2 = n.randoff2;
+        node.suspend = inputParameters.suspend;
+        node.random = inputParameters.random;
+        node.randon1 = inputParameters.randon1;
+        node.randoff1 = inputParameters.randoff1;
+        node.randon2 = inputParameters.randon2;
+        node.randoff2 = inputParameters.randoff2;
 
-        node.repeat = n.repeat;
-        node.atStart = n.atstart;
+        node.repeat = inputParameters.repeat;
+        node.atStart = inputParameters.atstart;
 
-        node.odd = n.odd;
-        node.even = n.even;
+        node.odd = inputParameters.odd;
+        node.even = inputParameters.even;
 
-        node.day1 = n.day1;
-        node.month1 = n.month1;
-        node.day2 = n.day2;
-        node.month2 = n.month2;
-        node.day3 = n.day3;
-        node.month3 = n.month3;
-        node.day4 = n.day4;
-        node.month4 = n.month4;
-        node.day5 = n.day5;
-        node.month5 = n.month5;
-        node.day6 = n.day6;
-        node.month6 = n.month6;
-        node.day7 = n.day7;
-        node.month7 = n.month7;
-        node.day8 = n.day8;
-        node.month8 = n.month8;
-        node.day9 = n.day9;
-        node.month9 = n.month9;
-        node.day10 = n.day10;
-        node.month10 = n.month10;
-        node.day11 = n.day11;
-        node.month11 = n.month11;
-        node.day12 = n.day12;
-        node.month12 = n.month12;
+        node.day1 = inputParameters.day1;
+        node.month1 = inputParameters.month1;
+        node.day2 = inputParameters.day2;
+        node.month2 = inputParameters.month2;
+        node.day3 = inputParameters.day3;
+        node.month3 = inputParameters.month3;
+        node.day4 = inputParameters.day4;
+        node.month4 = inputParameters.month4;
+        node.day5 = inputParameters.day5;
+        node.month5 = inputParameters.month5;
+        node.day6 = inputParameters.day6;
+        node.month6 = inputParameters.month6;
+        node.day7 = inputParameters.day7;
+        node.month7 = inputParameters.month7;
+        node.day8 = inputParameters.day8;
+        node.month8 = inputParameters.month8;
+        node.day9 = inputParameters.day9;
+        node.month9 = inputParameters.month9;
+        node.day10 = inputParameters.day10;
+        node.month10 = inputParameters.month10;
+        node.day11 = inputParameters.day11;
+        node.month11 = inputParameters.month11;
+        node.day12 = inputParameters.day12;
+        node.month12 = inputParameters.month12;
 
-        node.xday1 = n.xday1;
-        node.xmonth1 = n.xmonth1;
-        node.xday2 = n.xday2;
-        node.xmonth2 = n.xmonth2;
-        node.xday3 = n.xday3;
-        node.xmonth3 = n.xmonth3;
-        node.xday4 = n.xday4;
-        node.xmonth4 = n.xmonth4;
-        node.xday5 = n.xday5;
-        node.xmonth5 = n.xmonth5;
-        node.xday6 = n.xday6;
-        node.xmonth6 = n.xmonth6;
-        node.xday7 = n.xday7;
-        node.xmonth7 = n.xmonth7;
-        node.xday8 = n.xday8;
-        node.xmonth8 = n.xmonth8;
-        node.xday9 = n.xday9;
-        node.xmonth9 = n.xmonth9;
-        node.xday10 = n.xday10;
-        node.xmonth10 = n.xmonth10;
-        node.xday11 = n.xday11;
-        node.xmonth11 = n.xmonth11;
-        node.xday12 = n.xday12;
-        node.xmonth12 = n.xmonth12;
+        node.xday1 = inputParameters.xday1;
+        node.xmonth1 = inputParameters.xmonth1;
+        node.xday2 = inputParameters.xday2;
+        node.xmonth2 = inputParameters.xmonth2;
+        node.xday3 = inputParameters.xday3;
+        node.xmonth3 = inputParameters.xmonth3;
+        node.xday4 = inputParameters.xday4;
+        node.xmonth4 = inputParameters.xmonth4;
+        node.xday5 = inputParameters.xday5;
+        node.xmonth5 = inputParameters.xmonth5;
+        node.xday6 = inputParameters.xday6;
+        node.xmonth6 = inputParameters.xmonth6;
+        node.xday7 = inputParameters.xday7;
+        node.xmonth7 = inputParameters.xmonth7;
+        node.xday8 = inputParameters.xday8;
+        node.xmonth8 = inputParameters.xmonth8;
+        node.xday9 = inputParameters.xday9;
+        node.xmonth9 = inputParameters.xmonth9;
+        node.xday10 = inputParameters.xday10;
+        node.xmonth10 = inputParameters.xmonth10;
+        node.xday11 = inputParameters.xday11;
+        node.xmonth11 = inputParameters.xmonth11;
+        node.xday12 = inputParameters.xday12;
+        node.xmonth12 = inputParameters.xmonth12;
 
-        node.d1 = n.d1;
-        node.w1 = n.w1;
-        node.d2 = n.d2;
-        node.w2 = n.w2;
-        node.d3 = n.d3;
-        node.w3 = n.w3;
-        node.d4 = n.d4;
-        node.w4 = n.w4;
-        node.d5 = n.d5;
-        node.w5 = n.w5;
-        node.d6 = n.d6;
-        node.w6 = n.w6;
+        node.d1 = inputParameters.d1;
+        node.w1 = inputParameters.w1;
+        node.d2 = inputParameters.d2;
+        node.w2 = inputParameters.w2;
+        node.d3 = inputParameters.d3;
+        node.w3 = inputParameters.w3;
+        node.d4 = inputParameters.d4;
+        node.w4 = inputParameters.w4;
+        node.d5 = inputParameters.d5;
+        node.w5 = inputParameters.w5;
+        node.d6 = inputParameters.d6;
+        node.w6 = inputParameters.w6;
 
-        node.xd1 = n.xd1;
-        node.xw1 = n.xw1;
-        node.xd2 = n.xd2;
-        node.xw2 = n.xw2;
-        node.xd3 = n.xd3;
-        node.xw3 = n.xw3;
-        node.xd4 = n.xd4;
-        node.xw4 = n.xw4;
-        node.xd5 = n.xd5;
-        node.xw5 = n.xw5;
-        node.xd6 = n.xd6;
-        node.xw6 = n.xw6;
+        node.xd1 = inputParameters.xd1;
+        node.xw1 = inputParameters.xw1;
+        node.xd2 = inputParameters.xd2;
+        node.xw2 = inputParameters.xw2;
+        node.xd3 = inputParameters.xd3;
+        node.xw3 = inputParameters.xw3;
+        node.xd4 = inputParameters.xd4;
+        node.xw4 = inputParameters.xw4;
+        node.xd5 = inputParameters.xd5;
+        node.xw5 = inputParameters.xw5;
+        node.xd6 = inputParameters.xd6;
+        node.xw6 = inputParameters.xw6;
         // doesn't seem needed - node.xw5 = n.xw5 || 0;
 
         var goodDay = 0;
@@ -210,7 +210,7 @@ module.exports = function (RED) {
             node.emit("input", {});
         }, oneMinute); // trigger every 60 secs
 
-        node.on("input", function (inmsg) {
+        node.on("input", function (inputMessage) {
             if (awayMinutes) {
                 awayMinutes--;
             }
@@ -242,8 +242,8 @@ module.exports = function (RED) {
                 node.lon = lonOverride;
                 node.lat = latOverride;
             } else {
-                node.lon = n.lon;
-                node.lat = n.lat;
+                node.lon = inputParameters.lon;
+                node.lat = inputParameters.lat;
             }
 
             var now = new Date();
@@ -295,11 +295,11 @@ module.exports = function (RED) {
 
             var statusText = "";
 
-            var outmsg1 = {
+            var outputMessage1 = {
                 payload: "",
                 topic: ""
             };
-            var outmsg2 = {
+            var outputMessage2 = {
                 payload: "",
                 reference: node.outtopic + ":" + node.outPayload1 + ":" + node.outPayload2 + ":" + today,
                 topic: "status",
@@ -307,7 +307,7 @@ module.exports = function (RED) {
                 time: "",
                 name: ""
             };
-            var outmsg3 = {
+            var outputMessage3 = {
                 payload: "",
                 topic: ""
             };
@@ -362,13 +362,13 @@ module.exports = function (RED) {
             }
 
             // manual override
-            if ((inmsg.payload == 1) || (inmsg.payload === 0)) {
-                inmsg.payload = inmsg.payload.toString();
+            if ((inputMessage.payload == 1) || (inputMessage.payload === 0)) {
+                inputMessage.payload = inputMessage.payload.toString();
             }
 
-            if (inmsg.payload > "") {
-                inmsg.payload = inmsg.payload.toString().replace(/ +(?= )/g, '');
-                var theSwitch = inmsg.payload.toLowerCase().split(" ");
+            if (inputMessage.payload > "") {
+                inputMessage.payload = inputMessage.payload.toString().replace(/ +(?= )/g, '');
+                var theSwitch = inputMessage.payload.toLowerCase().split(" ");
 
                 switch (theSwitch[0]) {
                     case "geo_override": change = 1;
@@ -884,7 +884,6 @@ module.exports = function (RED) {
                     break;
             }
 
-
             switch (endTime2) {
                 case 5000:
                     endTime2 = dawn;
@@ -1056,7 +1055,6 @@ module.exports = function (RED) {
                 autoState = 1;
             }
 
-
             if (
                 ((node.xday1 == dateNow) && (node.xmonth1 == (now.getMonth() + 1))) ||
                 ((node.xday2 == dateNow) && (node.xmonth2 == (now.getMonth() + 1))) ||
@@ -1218,27 +1216,27 @@ module.exports = function (RED) {
                 manov += " - SUSPENDED";
             }
 
-            outmsg2.name = node.name;
-            outmsg2.time = 0;
+            outputMessage2.name = node.name;
+            outputMessage2.time = 0;
 
             if (actualState) {
-                outmsg2.state = "ON";
+                outputMessage2.state = "ON";
             } else { 
-                outmsg2.state = "OFF";
+                outputMessage2.state = "OFF";
             }
 
             if (stopped == 0) {
                 if (temporaryManual) {
-                    outmsg2.state += " Override";
+                    outputMessage2.state += " Override";
                 } else if (permanentManual) {
-                    outmsg2.state += " Manual";
+                    outputMessage2.state += " Manual";
                 } else {
                     if (goodDay == 1) {
-                        outmsg2.state += " Auto";
+                        outputMessage2.state += " Auto";
                     }
                 }
             } else {
-                outmsg2.state += " Stopped";
+                outputMessage2.state += " Stopped";
             }
 
             if ((permanentManual == 1) || (temporaryManual == 1) || (node.suspend)) { // so manual then
@@ -1309,7 +1307,7 @@ module.exports = function (RED) {
                             }
                         }
 
-                        outmsg2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
+                        outputMessage2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
                         if (stopped == 0) {
                             if (awayMinutes > 1) {
                                 statusText = "Away " + (
@@ -1346,7 +1344,7 @@ module.exports = function (RED) {
                             } else { 
                                 duration = actualStartTime + (1440 - today);
                             }
-                        } outmsg2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
+                        } outputMessage2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
                         if (stopped == 0) {
                             if (awayMinutes > 1) {
                                 statusText = "Away " + (
@@ -1372,7 +1370,7 @@ module.exports = function (RED) {
                         }
                     }
                 } else {
-                    outmsg2.time = "";
+                    outputMessage2.time = "";
                     if (stopped == 0) {
                         if (awayMinutes > 1) {
                             statusText = "Away " + (
@@ -1403,122 +1401,99 @@ module.exports = function (RED) {
                 }
             } 
             
-            outmsg2.lon = node.lon;
-            outmsg2.lat = node.lat;
+            outputMessage2.lon = node.lon;
+            outputMessage2.lat = node.lat;
 
-            outmsg1.topic = node.outtopic;
-            outmsg3.payload = node.outText1;
-            outmsg3.topic = node.outtopic;
+            outputMessage1.topic = node.outtopic;
+            outputMessage3.payload = node.outText1;
+            outputMessage3.topic = node.outtopic;
 
             if (temporaryManual || permanentManual) {
-                outmsg1.state = (actualState) ? "on" : "off";
+                outputMessage1.state = (actualState) ? "on" : "off";
             } else { 
-                outmsg1.state = "auto";
+                outputMessage1.state = "auto";
             }
-            outmsg1.value = actualState;
+            outputMessage1.value = actualState;
 
             if ((actualState) && (awayMinutes < 2)) {
-                outmsg1.payload = node.outPayload1;
-                outmsg3.payload = node.outText1;
+                outputMessage1.payload = node.outPayload1;
+                outputMessage3.payload = node.outText1;
             } else {
-                outmsg1.payload = node.outPayload2;
-                outmsg3.payload = node.outText2;
+                outputMessage1.payload = node.outPayload2;
+                outputMessage3.payload = node.outText2;
             }
 
             // take into account CHANGE variable - if true a manual or auto change is due
 
-            outmsg1.autoState = autoState;
-            outmsg1.manualState = manualState;
-            outmsg1.timeout = timeout;
-            outmsg1.temporaryManual = temporaryManual;
-            outmsg1.permanentManual = permanentManual;
-            outmsg1.now = today;
-            outmsg1.timer = precision;
-            outmsg1.duration = duration;
-            outmsg1.stamp = Date.now();
-            outmsg1.extState = statusText;
+            outputMessage1.autoState = autoState;
+            outputMessage1.manualState = manualState;
+            outputMessage1.timeout = timeout;
+            outputMessage1.temporaryManual = temporaryManual;
+            outputMessage1.permanentManual = permanentManual;
+            outputMessage1.now = today;
+            outputMessage1.timer = precision;
+            outputMessage1.duration = duration;
+            outputMessage1.stamp = Date.now();
+            outputMessage1.extState = statusText;
 
             if (awayMinutes) {
-                outmsg2.state = "AWAY";
+                outputMessage2.state = "AWAY";
             }
 
-            outmsg2.start = actualStartTime;
-            outmsg2.end = actualEndTime;
-            outmsg2.dusk = dusk;
-            outmsg2.dawn = dawn;
-            outmsg2.solarNoon = solarNoon;
-            outmsg2.sunrise = sunrise;
-            outmsg2.sunset = sunset;
-            outmsg2.night = night;
-            outmsg2.nightEnd = nightEnd;
-            outmsg2.moonrise = moonrise;
-            outmsg2.moonset = moonset;
-            outmsg2.now = today;
-            outmsg2.timer = precision;
-            outmsg2.duration = duration;
-            outmsg2.onOverride = onOverride;
-            outmsg2.offOverride = offOverride;
-            outmsg2.onOffsetOverride = onOffsetOverride;
-            outmsg2.offOffsetOverride = offOffsetOverride;
-            outmsg2.stamp = Date.now();
-            outmsg2.extState = statusText;
+            outputMessage2.start = actualStartTime;
+            outputMessage2.end = actualEndTime;
+            outputMessage2.dusk = dusk;
+            outputMessage2.dawn = dawn;
+            outputMessage2.solarNoon = solarNoon;
+            outputMessage2.sunrise = sunrise;
+            outputMessage2.sunset = sunset;
+            outputMessage2.night = night;
+            outputMessage2.nightEnd = nightEnd;
+            outputMessage2.moonrise = moonrise;
+            outputMessage2.moonset = moonset;
+            outputMessage2.now = today;
+            outputMessage2.timer = precision;
+            outputMessage2.duration = duration;
+            outputMessage2.onOverride = onOverride;
+            outputMessage2.offOverride = offOverride;
+            outputMessage2.onOffsetOverride = onOffsetOverride;
+            outputMessage2.offOffsetOverride = offOffsetOverride;
+            outputMessage2.stamp = Date.now();
+            outputMessage2.extState = statusText;
 
-            if (outmsg2.state.substr(0, 2) == "ON") {
-                outmsg2.payload = 1;
+            if (outputMessage2.state.substr(0, 2) === "ON") {
+                outputMessage2.payload = 1;
             } else {
-                outmsg2.payload = 0;
+                outputMessage2.payload = 0;
             }
 
             // jan 9, 2022
-
-
             if ((! node.suspend) && ((goodDay) || (permanentManual))) {
+                const outputMessages = [];
                 if ((change) || ((node.atStart) && (startDone == 0))) {
-                    if (outmsg1.payload > "") {
-                        if (stopped == 0) {
-                            if (change) {
-                                node.send([outmsg1, outmsg2, outmsg3]);
-                            } else {
-                                node.send([null, outmsg2, outmsg3]);
-                            }
-                        } else {
-                            if (change) {
-                                node.send([outmsg1, outmsg2, null]);
-                            } else {
-                                node.send([null, outmsg2, null]);
-                            }
-                        }
+                    if ((outputMessage1.payload > "") && change) {
+                        outputMessages.push(outputMessage1);
                     } else {
-                        if (stopped == 0) {
-                            node.send([null, outmsg2, outmsg3]);
-                        } else {
-                            node.send([null, outmsg2, null]);
-                        }
+                        outputMessages.push(null);
+                    }
+                    outputMessages.push(outputMessage2);
+                    if (stopped == 0) {
+                        outputMessages.push(outputMessage3);
+                    } else {
+                        outputMessages.push(null);
                     }
                 } else {
-                    if (outmsg1.payload > "") {
-                        if (node.repeat) {
-                            if (stopped == 0) {
-                                node.send([outmsg1, outmsg2, null]);
-                            } else {
-                                node.send([null, outmsg2, null]);
-                            }
-                        } else {
-                            if (stopped == 0) {
-                                node.send([null, outmsg2, null]);
-                            } else {
-                                node.send([null, outmsg2, null]);
-                            }
-                        }
+                    if (outputMessage1.payload > "" && node.repeat && stopped == 0) {
+                        outputMessages.push(outputMessage1);
                     } else {
-                        if (node.repeat) {
-                            node.send([null, outmsg2, null]);
-                        }
+                        outputMessages.push(null);
                     }
+                    outputMessages.push(outputMessage2);
+                    outputMessages.push(null);
                 }
+                node.send(outputMessages);
             }
             startDone = 1;
-
         }); // end of the internal function
 
         setTimeout(function () {
