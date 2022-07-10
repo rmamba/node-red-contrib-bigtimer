@@ -953,7 +953,7 @@ module.exports = function (RED) {
                     autoState = 0;
                 }
 
-                if ((node.even) && ! wday) {
+                if ((node.even) && !wday) {
                     autoState = 0;
                 }
 
@@ -969,11 +969,11 @@ module.exports = function (RED) {
                 autoState = 0;
                 if (actualStartTime <= actualEndTime) {
                     if ((today >= actualStartTime) && (today < actualEndTime)) {
-                        autoState = 1;
+                        autoState |= 1;
                     }
                 } else { // right we are in an overlap situation
                     if (((today >= actualStartTime) || (today < actualEndTime))) {
-                        autoState = 1;
+                        autoState |= 1;
                     }
                 }
 
@@ -981,11 +981,11 @@ module.exports = function (RED) {
                 if (node.startTime2 != node.endTime2) {
                     if (actualStartTime2 <= actualEndTime2) {
                         if ((today >= actualStartTime2) && (today < actualEndTime2)) {
-                            autoState = 2;
+                            autoState |= 2;
                         }
                     } else { // right we are in an overlap situation
                         if (((today >= actualStartTime2) || (today < actualEndTime2))) {
-                            autoState = 2;
+                            autoState |= 2;
                         }
                     }
                 }
