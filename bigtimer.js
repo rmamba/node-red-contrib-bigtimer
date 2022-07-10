@@ -1050,6 +1050,7 @@ module.exports = function (RED) {
             }
 
             var duration = 0;
+            var duration2 = 0;
             var manov = "";
 
             if (! goodDay == 1) {
@@ -1150,29 +1151,30 @@ module.exports = function (RED) {
             } else { // so not manual but auto....
                 if (goodDay == 1) { // auto and today's the day
                     if (actualState) { // i.e. if turning on automatically
-                        if (actualState == 1) {
+                        if (actualState & 1 === 1) {
                             if (today <= actualEndTime) {
                                 duration = actualEndTime - today;
                             } else { 
                                 duration = actualEndTime + (1440 - today);
                             }
                         }
-                        if (actualState == 2) {
+                        if (actualState & 2 === 2) {
                             if (today <= actualEndTime2) {
-                                duration = actualEndTime2 - today;
+                                duration2 = actualEndTime2 - today;
                             } else { 
-                                duration = actualEndTime2 + (1440 - today);
+                                duration2 = actualEndTime2 + (1440 - today);
                             }
                         }
 
                         outputMessage2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
+                        outputMessage2.time2 = pad(parseInt(duration2 / 60), 2) + "hrs " + pad(duration2 % 60, 2) + "mins";
                         if (stopped == 0) {
                             if (awayMinutes > 1) {
                                 statusText = "Away " + (
                                     (awayMinutes) - 1
                                 ) + awayMod;
                             } else { 
-                                statusText = "ON for " + pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins";
+                                statusText = `ON for ${pad(parseInt(duration / 60), 2)}hrs ${pad(duration % 60, 2)}mins`; //Only for time1 ???\nON for ${pad(parseInt(duration2 / 60), 2)}hrs ${pad(duration2 % 60, 2)}mins`;
                             }
                             node.status({fill: "green", shape: thedot, text: statusText});
                         } else {
@@ -1192,9 +1194,9 @@ module.exports = function (RED) {
                     } else {
                         if ((node.startTime2 != node.endTime2) && (today > actualEndTime) && (today < actualEndTime2)) { // valid start and end 2 and we're past period 1
                             if ((today <= actualStartTime2)) {
-                                duration = actualStartTime2 - today;
+                                duration2 = actualStartTime2 - today;
                             } else { 
-                                duration = actualStartTime2 + (1440 - today);
+                                duration2 = actualStartTime2 + (1440 - today);
                             }
                         } else {
                             if (today <= actualStartTime) {
@@ -1202,7 +1204,9 @@ module.exports = function (RED) {
                             } else { 
                                 duration = actualStartTime + (1440 - today);
                             }
-                        } outputMessage2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
+                        } 
+                        outputMessage2.time = pad(parseInt(duration / 60), 2) + "hrs " + pad(duration % 60, 2) + "mins" + manov;
+                        outputMessage2.time2 = pad(parseInt(duration2 / 60), 2) + "hrs " + pad(duration2 % 60, 2) + "mins" + manov;
                         if (stopped == 0) {
                             if (awayMinutes > 1) {
                                 statusText = "Away " + (
@@ -1291,6 +1295,7 @@ module.exports = function (RED) {
             outputMessage1.now = today;
             outputMessage1.timer = precision;
             outputMessage1.duration = duration;
+            outputMessage1.duration2 = duration2;
             outputMessage1.stamp = Date.now();
             outputMessage1.extState = statusText;
 
