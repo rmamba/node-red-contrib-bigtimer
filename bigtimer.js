@@ -1262,9 +1262,6 @@ module.exports = function (RED) {
                     }
                 }
             } 
-            
-            outputMessage2.lon = node.lon;
-            outputMessage2.lat = node.lat;
 
             outputMessage1.topic = node.outTopic;
             outputMessage3.payload = node.outText1;
@@ -1303,6 +1300,14 @@ module.exports = function (RED) {
                 outputMessage2.state = "AWAY";
             }
 
+            outputMessage2.lon = node.lon;
+            outputMessage2.lat = node.lat;
+            outputMessage2.actualStartOffset = actualStartOffset;
+            outputMessage2.actualStartTime = actualStartTime;
+            outputMessage2.actualEndTime = actualEndTime;
+            outputMessage2.actualStartOffset2 = actualStartOffset2;
+            outputMessage2.actualStartTime2 = actualStartTime2;
+            outputMessage2.actualEndTime2 = actualEndTime2;
             outputMessage2.start = actualStartTime;
             outputMessage2.end = actualEndTime;
             outputMessage2.dusk = dusk;
@@ -1317,6 +1322,7 @@ module.exports = function (RED) {
             outputMessage2.now = today;
             outputMessage2.timer = precision;
             outputMessage2.duration = duration;
+            outputMessage2.duration2 = duration2;
             outputMessage2.onOverride = onOverride;
             outputMessage2.offOverride = offOverride;
             outputMessage2.onOffsetOverride = onOffsetOverride;
