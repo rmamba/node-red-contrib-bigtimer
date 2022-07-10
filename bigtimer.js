@@ -113,7 +113,7 @@ module.exports = function (RED) {
                 }
             }
 
-            if ((lonOverride != -1) && (latOverride != -1)) {
+            if ((lonOverride !== -1) && (latOverride !== -1)) {
                 node.lon = lonOverride;
                 node.lat = latOverride;
             } else {
@@ -130,19 +130,19 @@ module.exports = function (RED) {
             // this is the place to add an offset
             now.setHours(hoursNow + parseInt(node.offs, 10));
             // var nowOff = -now.getTimezoneOffset() * 60000;	// local offset
-            var times = SunCalc.getTimes(now, node.lat, node.lon); // get this from UTC, not local time
-            var moons = SunCalc.getMoonTimes(now, node.lat, node.lon); // moon up and down times - moons.rise, moons.set
+            var sunTimes = SunCalc.getTimes(now, node.lat, node.lon); // get this from UTC, not local time
+            var moonTimes = SunCalc.getMoonTimes(now, node.lat, node.lon); // moon up and down times - moons.rise, moons.set
 
-            var dawn = minutesSinceMidnight(times.dawn);
-            var dusk = minutesSinceMidnight(times.dusk);
-            var solarNoon = minutesSinceMidnight(times.solarNoon);
-            var sunrise = minutesSinceMidnight(times.sunrise);
-            var sunset = minutesSinceMidnight(times.sunset);
+            var dawn = minutesSinceMidnight(sunTimes.dawn);
+            var dusk = minutesSinceMidnight(sunTimes.dusk);
+            var solarNoon = minutesSinceMidnight(sunTimes.solarNoon);
+            var sunrise = minutesSinceMidnight(sunTimes.sunrise);
+            var sunset = minutesSinceMidnight(sunTimes.sunset);
 
-            var moonrise = minutesSinceMidnight(moons.rise, 1440);
-            var moonset = minutesSinceMidnight(moons.rise, 0);
-            var night = minutesSinceMidnight(times.night);
-            var nightEnd = minutesSinceMidnight(times.nightEnd);
+            var moonrise = minutesSinceMidnight(moonTimes.rise, 1440);
+            var moonset = minutesSinceMidnight(moonTimes.rise, 0);
+            var night = minutesSinceMidnight(sunTimes.night);
+            var nightEnd = minutesSinceMidnight(sunTimes.nightEnd);
 
             // now=new Date(now+nowOff); // from now on we're working on local time
             var today = minutesSinceMidnight(now);
@@ -772,31 +772,31 @@ module.exports = function (RED) {
                     break;
 
                 case 10001:
-                    endTime2 = (startTime + 1) % 1440;
+                    endTime2 = (startTime2 + 1) % 1440;
                     break;
                 case 10002:
-                    endTime2 = (startTime + 2) % 1440;
+                    endTime2 = (startTime2 + 2) % 1440;
                     break;
                 case 10005: 
-                    endTime2 = (startTime + 5) % 1440;
+                    endTime2 = (startTime2 + 5) % 1440;
                     break;
                 case 10010: 
-                    endTime2 = (startTime + 10) % 1440;
+                    endTime2 = (startTime2 + 10) % 1440;
                     break;
                 case 10015: 
-                    endTime2 = (startTime + 15) % 1440;
+                    endTime2 = (startTime2 + 15) % 1440;
                     break;
                 case 10030: 
-                    endTime2 = (startTime + 30) % 1440;
+                    endTime2 = (startTime2 + 30) % 1440;
                     break;
                 case 10060: 
-                    endTime2 = (startTime + 60) % 1440;
+                    endTime2 = (startTime2 + 60) % 1440;
                     break;
                 case 10090: 
-                    endTime2 = (startTime + 90) % 1440;
+                    endTime2 = (startTime2 + 90) % 1440;
                     break;
                 case 10120: 
-                    endTime2 = (startTime + 120) % 1440;
+                    endTime2 = (startTime2 + 120) % 1440;
                     break;
             }
 
