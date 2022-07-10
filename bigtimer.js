@@ -1319,8 +1319,8 @@ module.exports = function (RED) {
             outputMessage2.stamp = Date.now();
             outputMessage2.extState = statusText;
 
-            if (outputMessage2.state.substr(0, 2) === "ON") {
-                outputMessage2.payload = 1;
+            if (outputMessage2.state.substring(0, 2) === "ON") {
+                outputMessage2.payload = actualState;
             } else {
                 outputMessage2.payload = 0;
             }
