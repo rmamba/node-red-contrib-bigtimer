@@ -26,7 +26,10 @@ module.exports = function (RED) {
 
     function bigTimerNode(inputParameters) {
         RED.nodes.createNode(this, inputParameters);
-        var node = this;
+        var node = {
+            ...this,
+            ...inputParameters
+        };
 
         var oneMinute = 60000;
         var precision = 0;
@@ -51,135 +54,6 @@ module.exports = function (RED) {
         var startDone = 0;
 
         var onlyManual = 0;
-
-        node.name = inputParameters.name;
-        node.lat = inputParameters.lat;
-        node.lon = inputParameters.lon;
-        node.offs = inputParameters.offs;
-        node.startT = inputParameters.starttime;
-        node.endT = inputParameters.endtime;
-        node.startT2 = inputParameters.starttime2;
-        node.endT2 = inputParameters.endtime2;
-        node.startOff = inputParameters.startoff;
-        node.endOff = inputParameters.endoff;
-        node.startOff2 = inputParameters.startoff2;
-        node.endOff2 = inputParameters.endoff2;
-        node.outtopic = inputParameters.outtopic;
-        node.outPayload1 = inputParameters.outpayload1;
-        node.outPayload2 = inputParameters.outpayload2;
-        node.outText1 = inputParameters.outtext1;
-        node.outText2 = inputParameters.outtext2;
-        node.timeout = inputParameters.timeout;
-        node.sun = inputParameters.sun;
-        node.mon = inputParameters.mon;
-        node.tue = inputParameters.tue;
-        node.wed = inputParameters.wed;
-        node.thu = inputParameters.thu;
-        node.fri = inputParameters.fri;
-        node.sat = inputParameters.sat;
-        node.jan = inputParameters.jan;
-        node.feb = inputParameters.feb;
-        node.mar = inputParameters.mar;
-        node.apr = inputParameters.apr;
-        node.may = inputParameters.may;
-        node.jun = inputParameters.jun;
-        node.jul = inputParameters.jul;
-        node.aug = inputParameters.aug;
-        node.sep = inputParameters.sep;
-        node.oct = inputParameters.oct;
-        node.nov = inputParameters.nov;
-        node.dec = inputParameters.dec;
-
-        node.suspend = inputParameters.suspend;
-        node.random = inputParameters.random;
-        node.randon1 = inputParameters.randon1;
-        node.randoff1 = inputParameters.randoff1;
-        node.randon2 = inputParameters.randon2;
-        node.randoff2 = inputParameters.randoff2;
-
-        node.repeat = inputParameters.repeat;
-        node.atStart = inputParameters.atstart;
-
-        node.odd = inputParameters.odd;
-        node.even = inputParameters.even;
-
-        node.day1 = inputParameters.day1;
-        node.month1 = inputParameters.month1;
-        node.day2 = inputParameters.day2;
-        node.month2 = inputParameters.month2;
-        node.day3 = inputParameters.day3;
-        node.month3 = inputParameters.month3;
-        node.day4 = inputParameters.day4;
-        node.month4 = inputParameters.month4;
-        node.day5 = inputParameters.day5;
-        node.month5 = inputParameters.month5;
-        node.day6 = inputParameters.day6;
-        node.month6 = inputParameters.month6;
-        node.day7 = inputParameters.day7;
-        node.month7 = inputParameters.month7;
-        node.day8 = inputParameters.day8;
-        node.month8 = inputParameters.month8;
-        node.day9 = inputParameters.day9;
-        node.month9 = inputParameters.month9;
-        node.day10 = inputParameters.day10;
-        node.month10 = inputParameters.month10;
-        node.day11 = inputParameters.day11;
-        node.month11 = inputParameters.month11;
-        node.day12 = inputParameters.day12;
-        node.month12 = inputParameters.month12;
-
-        node.xday1 = inputParameters.xday1;
-        node.xmonth1 = inputParameters.xmonth1;
-        node.xday2 = inputParameters.xday2;
-        node.xmonth2 = inputParameters.xmonth2;
-        node.xday3 = inputParameters.xday3;
-        node.xmonth3 = inputParameters.xmonth3;
-        node.xday4 = inputParameters.xday4;
-        node.xmonth4 = inputParameters.xmonth4;
-        node.xday5 = inputParameters.xday5;
-        node.xmonth5 = inputParameters.xmonth5;
-        node.xday6 = inputParameters.xday6;
-        node.xmonth6 = inputParameters.xmonth6;
-        node.xday7 = inputParameters.xday7;
-        node.xmonth7 = inputParameters.xmonth7;
-        node.xday8 = inputParameters.xday8;
-        node.xmonth8 = inputParameters.xmonth8;
-        node.xday9 = inputParameters.xday9;
-        node.xmonth9 = inputParameters.xmonth9;
-        node.xday10 = inputParameters.xday10;
-        node.xmonth10 = inputParameters.xmonth10;
-        node.xday11 = inputParameters.xday11;
-        node.xmonth11 = inputParameters.xmonth11;
-        node.xday12 = inputParameters.xday12;
-        node.xmonth12 = inputParameters.xmonth12;
-
-        node.d1 = inputParameters.d1;
-        node.w1 = inputParameters.w1;
-        node.d2 = inputParameters.d2;
-        node.w2 = inputParameters.w2;
-        node.d3 = inputParameters.d3;
-        node.w3 = inputParameters.w3;
-        node.d4 = inputParameters.d4;
-        node.w4 = inputParameters.w4;
-        node.d5 = inputParameters.d5;
-        node.w5 = inputParameters.w5;
-        node.d6 = inputParameters.d6;
-        node.w6 = inputParameters.w6;
-
-        node.xd1 = inputParameters.xd1;
-        node.xw1 = inputParameters.xw1;
-        node.xd2 = inputParameters.xd2;
-        node.xw2 = inputParameters.xw2;
-        node.xd3 = inputParameters.xd3;
-        node.xw3 = inputParameters.xw3;
-        node.xd4 = inputParameters.xd4;
-        node.xw4 = inputParameters.xw4;
-        node.xd5 = inputParameters.xd5;
-        node.xw5 = inputParameters.xw5;
-        node.xd6 = inputParameters.xd6;
-        node.xw6 = inputParameters.xw6;
-        // doesn't seem needed - node.xw5 = n.xw5 || 0;
-
         var goodDay = 0;
 
         var temporaryManual = 0;
@@ -271,10 +145,10 @@ module.exports = function (RED) {
 
             // now=new Date(now+nowOff); // from now on we're working on local time
             var today = minutesSinceMidnight(now);
-            var startTime = parseInt(node.startT, 10);
-            var endTime = parseInt(node.endT, 10);
-            var startTime2 = parseInt(node.startT2, 10);
-            var endTime2 = parseInt(node.endT2, 10);
+            var startTime = parseInt(node.startTime, 10);
+            var endTime = parseInt(node.endTime, 10);
+            var startTime2 = parseInt(node.startTime2, 10);
+            var endTime2 = parseInt(node.endTime2, 10);
 
             var statusText = "";
 
@@ -284,7 +158,7 @@ module.exports = function (RED) {
             };
             var outputMessage2 = {
                 payload: "",
-                reference: node.outtopic + ":" + node.outPayload1 + ":" + node.outPayload2 + ":" + today,
+                reference: node.outTopic + ":" + node.outPayload1 + ":" + node.outPayload2 + ":" + today,
                 topic: "status",
                 state: "",
                 time: "",
@@ -1103,7 +977,7 @@ module.exports = function (RED) {
                 }
 
                 // added next line 17/02/2019 - suggestion from Mark McCans to overcome offset issue
-                if (node.startT2 != node.endT2) {
+                if (node.startTime2 != node.endTime2) {
                     if (actualStartTime2 <= actualEndTime2) {
                         if ((today >= actualStartTime2) && (today < actualEndTime2)) {
                             autoState = 2;
@@ -1315,7 +1189,7 @@ module.exports = function (RED) {
                             });
                         }
                     } else {
-                        if ((node.startT2 != node.endT2) && (today > actualEndTime) && (today < actualEndTime2)) { // valid start and end 2 and we're past period 1
+                        if ((node.startTime2 != node.endTime2) && (today > actualEndTime) && (today < actualEndTime2)) { // valid start and end 2 and we're past period 1
                             if ((today <= actualStartTime2)) {
                                 duration = actualStartTime2 - today;
                             } else { 
@@ -1387,9 +1261,9 @@ module.exports = function (RED) {
             outputMessage2.lon = node.lon;
             outputMessage2.lat = node.lat;
 
-            outputMessage1.topic = node.outtopic;
+            outputMessage1.topic = node.outTopic;
             outputMessage3.payload = node.outText1;
-            outputMessage3.topic = node.outtopic;
+            outputMessage3.topic = node.outTopic;
 
             if (temporaryManual || permanentManual) {
                 outputMessage1.state = (actualState) ? "on" : "off";
