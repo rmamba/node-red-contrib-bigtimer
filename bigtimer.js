@@ -264,25 +264,8 @@ module.exports = function (RED) {
             var sunrise = minutesSinceMidnight(times.sunrise);
             var sunset = minutesSinceMidnight(times.sunset);
 
-            var date2 = new Date;
-            var date3 = new Date;
-            var moonrise;
-            var moonset;
-
-            if (typeof moons.rise === 'undefined') {
-                moonrise = 1440;
-            } else {
-                date2 = moons.rise;
-                moonrise = minutesSinceMidnight(date2);
-            }
-
-            if (typeof moons.set === 'undefined') {
-                moonset = 0;
-            } else {
-                date3 = moons.set;
-                moonset = minutesSinceMidnight(date3);
-            }
-
+            var moonrise = minutesSinceMidnight(moons.rise, 1440);
+            var moonset = minutesSinceMidnight(moons.rise, 0);
             var night = minutesSinceMidnight(times.night);
             var nightEnd = minutesSinceMidnight(times.nightEnd);
 
