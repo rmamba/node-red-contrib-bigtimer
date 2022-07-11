@@ -6,6 +6,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
+    "luxon": "^3.0.1",
     "suncalc": "1.*"
   },
   "deprecated": false,

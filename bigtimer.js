@@ -18,7 +18,8 @@
 
 module.exports = function (RED) {
     "use strict";
-    var SunCalc = require('suncalc');
+    const SunCalc = require('suncalc');
+    const { DateTime } = require("luxon");
     const pad = require('./helpers/pad');
     const randomInt = require('./helpers/randomInt');
     const dayInMonth = require('./helpers/dayInMonth');
@@ -86,6 +87,11 @@ module.exports = function (RED) {
         }, oneMinute); // trigger every 60 secs
 
         node.on("input", function (inputMessage) {
+            const now = DateTime.local();
+            const dateNow = now.day;
+            const dayNow = now.weekday;
+            // const hoursNow = now.hour;
+
             if (awayMinutes) {
                 awayMinutes--;
             }
@@ -121,38 +127,28 @@ module.exports = function (RED) {
                 node.lat = inputParameters.lat;
             }
 
-            var now = new Date();
-            const dateNow = now.getUTCDate();
-            const dayNow = now.getUTCDay();
-            const hoursNow = now.getUTCHours();
-
-            // UTC time - not local time
-            // this is the place to add an offset
-            now.setHours(hoursNow + parseInt(node.offs, 10));
-            // var nowOff = -now.getTimezoneOffset() * 60000;	// local offset
+            // we're working on local time
             var sunTimes = SunCalc.getTimes(now, node.lat, node.lon); // get this from UTC, not local time
             var moonTimes = SunCalc.getMoonTimes(now, node.lat, node.lon); // moon up and down times - moons.rise, moons.set
 
-            var dawn = minutesSinceMidnight(sunTimes.dawn);
-            var dusk = minutesSinceMidnight(sunTimes.dusk);
-            var solarNoon = minutesSinceMidnight(sunTimes.solarNoon);
-            var sunrise = minutesSinceMidnight(sunTimes.sunrise);
-            var sunset = minutesSinceMidnight(sunTimes.sunset);
+            var dawn = minutesSinceMidnight(sunTimes.dawn, now.zone);
+            var dusk = minutesSinceMidnight(sunTimes.dusk, now.zone);
+            var solarNoon = minutesSinceMidnight(sunTimes.solarNoon, now.zone);
+            var sunrise = minutesSinceMidnight(sunTimes.sunrise, now.zone);
+            var sunset = minutesSinceMidnight(sunTimes.sunset, now.zone);
 
-            var moonrise = minutesSinceMidnight(moonTimes.rise, 1440);
-            var moonset = minutesSinceMidnight(moonTimes.rise, 0);
-            var night = minutesSinceMidnight(sunTimes.night);
-            var nightEnd = minutesSinceMidnight(sunTimes.nightEnd);
+            var moonrise = minutesSinceMidnight(moonTimes.rise, now.zone, 1440);
+            var moonset = minutesSinceMidnight(moonTimes.rise, now.zone, 0);
+            var night = minutesSinceMidnight(sunTimes.night, now.zone);
+            var nightEnd = minutesSinceMidnight(sunTimes.nightEnd, now.zone);
 
-            // now=new Date(now+nowOff); // from now on we're working on local time
-            var today = minutesSinceMidnight(now);
+            var today = now.hour*60 + now.minute;
             var startTime = parseInt(node.startTime, 10);
             var endTime = parseInt(node.endTime, 10);
             var startTime2 = parseInt(node.startTime2, 10);
             var endTime2 = parseInt(node.endTime2, 10);
 
             var statusText = "";
-
             var outputMessage1 = {
                 payload: "",
                 topic: ""
@@ -807,33 +803,26 @@ module.exports = function (RED) {
             goodDay = 0;
             switch (dayNow) {
                 case 0:
-                    if (node.sun) 
-                        autoState = 1;
+                case 7:
+                    if (node.sun) { autoState = 1; }
                     break;
                 case 1:
-                    if (node.mon) 
-                        autoState = 1;;
-                    ;;;
+                    if (node.mon) { autoState = 1; }
                     break;
                 case 2:
-                    if (node.tue) 
-                        autoState = 1;
+                    if (node.tue) { autoState = 1; }
                     break;
                 case 3:
-                    if (node.wed) 
-                        autoState = 1;
+                    if (node.wed) { autoState = 1; }
                     break;
                 case 4:
-                    if (node.thu) 
-                        autoState = 1;
+                    if (node.thu) { autoState = 1; }
                     break;
                 case 5:
-                    if (node.fri) 
-                        autoState = 1;
+                    if (node.fri) { autoState = 1; }
                     break;
                 case 6:
-                    if (node.sat) 
-                        autoState = 1;
+                    if (node.sat) { autoState = 1; }
                     break;
             }
 
@@ -841,52 +830,40 @@ module.exports = function (RED) {
                 autoState = 0;
                 switch (now.getUTCMonth()) {
                     case 0:
-                        if (node.jan) 
-                            autoState = 1;
+                        if (node.jan) { autoState = 1; }
                         break;
                     case 1:
-                        if (node.feb) 
-                            autoState = 1;
+                        if (node.feb) { autoState = 1; }
                         break;
                     case 2:
-                        if (node.mar) 
-                            autoState = 1;
+                        if (node.mar) { autoState = 1; }
                         break;
                     case 3:
-                        if (node.apr) 
-                            autoState = 1;
+                        if (node.apr) { autoState = 1; }
                         break;
                     case 4:
-                        if (node.may) 
-                            autoState = 1;
+                        if (node.may) { autoState = 1; }
                         break;
                     case 5:
-                        if (node.jun) 
-                            autoState = 1;
+                        if (node.jun) { autoState = 1; }
                         break;
                     case 6:
-                        if (node.jul) 
-                            autoState = 1;
+                        if (node.jul) { autoState = 1; }
                         break;
                     case 7:
-                        if (node.aug) 
-                            autoState = 1;
+                        if (node.aug) { autoState = 1; }
                         break;
                     case 8:
-                        if (node.sep) 
-                            autoState = 1;
+                        if (node.sep) { autoState = 1; }
                         break;
                     case 9:
-                        if (node.oct) 
-                            autoState = 1;
+                        if (node.oct) { autoState = 1; }
                         break;
                     case 10:
-                        if (node.nov) 
-                            autoState = 1;
+                        if (node.nov) { autoState = 1; }
                         break;
                     case 11:
-                        if (node.dec) 
-                            autoState = 1;
+                        if (node.dec) { autoState = 1; }
                         break;
                 }
             }
