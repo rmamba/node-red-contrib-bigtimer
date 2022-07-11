@@ -87,9 +87,12 @@ module.exports = function (RED) {
         }, oneMinute); // trigger every 60 secs
 
         node.on("input", function (inputMessage) {
-            const now = DateTime.local();
-            const dateNow = now.day;
-            const dayNow = now.weekday;
+            let now = DateTime.local();
+            if (inputMessage.tz) {
+                now = now.setZone(inputMessage.tz);
+            }
+            const dayNow = now.day;
+            const weekdayNow = now.weekday;
             // const hoursNow = now.hour;
 
             if (awayMinutes) {
@@ -801,7 +804,7 @@ module.exports = function (RED) {
 
             autoState = 0;
             goodDay = 0;
-            switch (dayNow) {
+            switch (weekdayNow) {
                 case 0:
                 case 7:
                     if (node.sun) { autoState = 1; }
@@ -869,18 +872,18 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.day1 == dateNow) && (node.month1 == (now.month + 1))) ||
-                ((node.day2 == dateNow) && (node.month2 == (now.month + 1))) ||
-                ((node.day3 == dateNow) && (node.month3 == (now.month + 1))) ||
-                ((node.day4 == dateNow) && (node.month4 == (now.month + 1))) ||
-                ((node.day5 == dateNow) && (node.month5 == (now.month + 1))) ||
-                ((node.day6 == dateNow) && (node.month6 == (now.month + 1))) ||
-                ((node.day7 == dateNow) && (node.month7 == (now.month + 1))) ||
-                ((node.day8 == dateNow) && (node.month8 == (now.month + 1))) ||
-                ((node.day9 == dateNow) && (node.month9 == (now.month + 1))) ||
-                ((node.day10 == dateNow) && (node.month10 == (now.month + 1))) ||
-                ((node.day11 == dateNow) && (node.month11 == (now.month + 1))) ||
-                ((node.day12 == dateNow) && (node.month12 == (now.month + 1))) ||
+                ((node.day1 == dayNow) && (node.month1 == (now.month + 1))) ||
+                ((node.day2 == dayNow) && (node.month2 == (now.month + 1))) ||
+                ((node.day3 == dayNow) && (node.month3 == (now.month + 1))) ||
+                ((node.day4 == dayNow) && (node.month4 == (now.month + 1))) ||
+                ((node.day5 == dayNow) && (node.month5 == (now.month + 1))) ||
+                ((node.day6 == dayNow) && (node.month6 == (now.month + 1))) ||
+                ((node.day7 == dayNow) && (node.month7 == (now.month + 1))) ||
+                ((node.day8 == dayNow) && (node.month8 == (now.month + 1))) ||
+                ((node.day9 == dayNow) && (node.month9 == (now.month + 1))) ||
+                ((node.day10 == dayNow) && (node.month10 == (now.month + 1))) ||
+                ((node.day11 == dayNow) && (node.month11 == (now.month + 1))) ||
+                ((node.day12 == dayNow) && (node.month12 == (now.month + 1))) ||
                 (dayInMonth(now, node.d1, node.w1) == true) ||
                 (dayInMonth(now, node.d2, node.w2) == true) ||
                 (dayInMonth(now, node.d3, node.w3) == true) ||
@@ -891,23 +894,23 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.xday1 == dateNow) && (node.xmonth1 == (now.month + 1))) ||
-                ((node.xday2 == dateNow) && (node.xmonth2 == (now.month + 1))) ||
-                ((node.xday3 == dateNow) && (node.xmonth3 == (now.month + 1))) ||
-                ((node.xday4 == dateNow) && (node.xmonth4 == (now.month + 1))) ||
-                ((node.xday5 == dateNow) && (node.xmonth5 == (now.month + 1))) ||
-                ((node.xday6 == dateNow) && (node.xmonth6 == (now.month + 1))) 
+                ((node.xday1 == dayNow) && (node.xmonth1 == (now.month + 1))) ||
+                ((node.xday2 == dayNow) && (node.xmonth2 == (now.month + 1))) ||
+                ((node.xday3 == dayNow) && (node.xmonth3 == (now.month + 1))) ||
+                ((node.xday4 == dayNow) && (node.xmonth4 == (now.month + 1))) ||
+                ((node.xday5 == dayNow) && (node.xmonth5 == (now.month + 1))) ||
+                ((node.xday6 == dayNow) && (node.xmonth6 == (now.month + 1))) 
             ) {
                 autoState = 0;
             }
 
             if (
-                ((node.xday7 == dateNow) && (node.xmonth7 == (now.month + 1))) ||
-                ((node.xday8 == dateNow) && (node.xmonth8 == (now.month + 1))) ||
-                ((node.xday9 == dateNow) && (node.xmonth9 == (now.month + 1))) ||
-                ((node.xday10 == dateNow) && (node.xmonth10 == (now.month + 1))) || 
-                ((node.xday11 == dateNow) && (node.xmonth11 == (now.month + 1))) || 
-                ((node.xday12 == dateNow) && (node.xmonth12 == (now.month + 1))) 
+                ((node.xday7 == dayNow) && (node.xmonth7 == (now.month + 1))) ||
+                ((node.xday8 == dayNow) && (node.xmonth8 == (now.month + 1))) ||
+                ((node.xday9 == dayNow) && (node.xmonth9 == (now.month + 1))) ||
+                ((node.xday10 == dayNow) && (node.xmonth10 == (now.month + 1))) || 
+                ((node.xday11 == dayNow) && (node.xmonth11 == (now.month + 1))) || 
+                ((node.xday12 == dayNow) && (node.xmonth12 == (now.month + 1))) 
             ) {
                 autoState = 1;
             }
@@ -925,7 +928,7 @@ module.exports = function (RED) {
 
             if (autoState) { // have to handle midnight wrap
                 var wday;
-                wday = dateNow & 1;
+                wday = dayNow & 1;
                 if ((node.odd) && wday) {
                     autoState = 0;
                 }
@@ -1308,6 +1311,7 @@ module.exports = function (RED) {
             outputMessage2.offOffsetOverride = offOffsetOverride;
             outputMessage2.stamp = Date.now();
             outputMessage2.extState = statusText;
+            outputMessage2.tz = now.zoneName;
 
             if (outputMessage2.state.substring(0, 2) === "ON") {
                 outputMessage2.payload = actualState;
