@@ -828,7 +828,7 @@ module.exports = function (RED) {
 
             if (autoState) {
                 autoState = 0;
-                switch (now.getUTCMonth()) {
+                switch (now.month) {
                     case 0:
                         if (node.jan) { autoState = 1; }
                         break;
@@ -869,18 +869,18 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.day1 == dateNow) && (node.month1 == (now.getUTCMonth() + 1))) ||
-                ((node.day2 == dateNow) && (node.month2 == (now.getUTCMonth() + 1))) ||
-                ((node.day3 == dateNow) && (node.month3 == (now.getUTCMonth() + 1))) ||
-                ((node.day4 == dateNow) && (node.month4 == (now.getUTCMonth() + 1))) ||
-                ((node.day5 == dateNow) && (node.month5 == (now.getUTCMonth() + 1))) ||
-                ((node.day6 == dateNow) && (node.month6 == (now.getUTCMonth() + 1))) ||
-                ((node.day7 == dateNow) && (node.month7 == (now.getUTCMonth() + 1))) ||
-                ((node.day8 == dateNow) && (node.month8 == (now.getUTCMonth() + 1))) ||
-                ((node.day9 == dateNow) && (node.month9 == (now.getUTCMonth() + 1))) ||
-                ((node.day10 == dateNow) && (node.month10 == (now.getUTCMonth() + 1))) ||
-                ((node.day11 == dateNow) && (node.month11 == (now.getUTCMonth() + 1))) ||
-                ((node.day12 == dateNow) && (node.month12 == (now.getUTCMonth() + 1))) ||
+                ((node.day1 == dateNow) && (node.month1 == (now.month + 1))) ||
+                ((node.day2 == dateNow) && (node.month2 == (now.month + 1))) ||
+                ((node.day3 == dateNow) && (node.month3 == (now.month + 1))) ||
+                ((node.day4 == dateNow) && (node.month4 == (now.month + 1))) ||
+                ((node.day5 == dateNow) && (node.month5 == (now.month + 1))) ||
+                ((node.day6 == dateNow) && (node.month6 == (now.month + 1))) ||
+                ((node.day7 == dateNow) && (node.month7 == (now.month + 1))) ||
+                ((node.day8 == dateNow) && (node.month8 == (now.month + 1))) ||
+                ((node.day9 == dateNow) && (node.month9 == (now.month + 1))) ||
+                ((node.day10 == dateNow) && (node.month10 == (now.month + 1))) ||
+                ((node.day11 == dateNow) && (node.month11 == (now.month + 1))) ||
+                ((node.day12 == dateNow) && (node.month12 == (now.month + 1))) ||
                 (dayInMonth(now, node.d1, node.w1) == true) ||
                 (dayInMonth(now, node.d2, node.w2) == true) ||
                 (dayInMonth(now, node.d3, node.w3) == true) ||
@@ -891,23 +891,23 @@ module.exports = function (RED) {
             }
 
             if (
-                ((node.xday1 == dateNow) && (node.xmonth1 == (now.getUTCMonth() + 1))) ||
-                ((node.xday2 == dateNow) && (node.xmonth2 == (now.getUTCMonth() + 1))) ||
-                ((node.xday3 == dateNow) && (node.xmonth3 == (now.getUTCMonth() + 1))) ||
-                ((node.xday4 == dateNow) && (node.xmonth4 == (now.getUTCMonth() + 1))) ||
-                ((node.xday5 == dateNow) && (node.xmonth5 == (now.getUTCMonth() + 1))) ||
-                ((node.xday6 == dateNow) && (node.xmonth6 == (now.getUTCMonth() + 1))) 
+                ((node.xday1 == dateNow) && (node.xmonth1 == (now.month + 1))) ||
+                ((node.xday2 == dateNow) && (node.xmonth2 == (now.month + 1))) ||
+                ((node.xday3 == dateNow) && (node.xmonth3 == (now.month + 1))) ||
+                ((node.xday4 == dateNow) && (node.xmonth4 == (now.month + 1))) ||
+                ((node.xday5 == dateNow) && (node.xmonth5 == (now.month + 1))) ||
+                ((node.xday6 == dateNow) && (node.xmonth6 == (now.month + 1))) 
             ) {
                 autoState = 0;
             }
 
             if (
-                ((node.xday7 == dateNow) && (node.xmonth7 == (now.getUTCMonth() + 1))) ||
-                ((node.xday8 == dateNow) && (node.xmonth8 == (now.getUTCMonth() + 1))) ||
-                ((node.xday9 == dateNow) && (node.xmonth9 == (now.getUTCMonth() + 1))) ||
-                ((node.xday10 == dateNow) && (node.xmonth10 == (now.getUTCMonth() + 1))) || 
-                ((node.xday11 == dateNow) && (node.xmonth11 == (now.getUTCMonth() + 1))) || 
-                ((node.xday12 == dateNow) && (node.xmonth12 == (now.getUTCMonth() + 1))) 
+                ((node.xday7 == dateNow) && (node.xmonth7 == (now.month + 1))) ||
+                ((node.xday8 == dateNow) && (node.xmonth8 == (now.month + 1))) ||
+                ((node.xday9 == dateNow) && (node.xmonth9 == (now.month + 1))) ||
+                ((node.xday10 == dateNow) && (node.xmonth10 == (now.month + 1))) || 
+                ((node.xday11 == dateNow) && (node.xmonth11 == (now.month + 1))) || 
+                ((node.xday12 == dateNow) && (node.xmonth12 == (now.month + 1))) 
             ) {
                 autoState = 1;
             }
