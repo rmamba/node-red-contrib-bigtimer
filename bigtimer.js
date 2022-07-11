@@ -88,8 +88,8 @@ module.exports = function (RED) {
 
         node.on("input", function (inputMessage) {
             let now = DateTime.local();
-            if (inputMessage.tz) {
-                now = now.setZone(inputMessage.tz);
+            if (node.tz) {
+                now = now.setZone(node.tz);
             }
             const dayNow = now.day;
             const weekdayNow = now.weekday;
